@@ -1,0 +1,20 @@
+{
+  "name": "josh-solo-project",
+  "version": "1.0.0",
+  "description": "language practise app for intermediate level students.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/josht28/Josh-solo-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/josht28/Josh-solo-project/issues"
+  },
+  "homepage": "https://github.com/josht28/Josh-solo-project#readme"
+}
