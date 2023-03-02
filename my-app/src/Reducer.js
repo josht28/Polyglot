@@ -5,7 +5,8 @@ const initialState = {
   AI_image: "AI Image",
   AI_name: "William",
   userId: "josh",
-
+  user_name: "Josh",
+  NativeLanguage: "French",
   messages: [
     {
       messageId: "",
@@ -17,24 +18,19 @@ const initialState = {
     },
   ],
 };
-const GETCHATROOMMESSAGES = 'getChatRoomMessages'
-const UPDATEMESSAGES = 'updatemessages'
+const GETCHATROOMMESSAGES = "getChatRoomMessages";
+const UPDATEMESSAGES = "updatemessages";
 export default function Reducer(state = initialState, action) {
   switch (action.type) {
     case GETCHATROOMMESSAGES: {
-      const newState = Object.assign({}, state, { ...action.payload, chatroomId: action.payload._id });
-      delete newState._id;
+      const newState = { ...action.payload };
       return newState;
     }
     case UPDATEMESSAGES: {
-       const newState = Object.assign({}, state, {
-         ...action.payload,
-         chatroomId: action.payload._id,
-       });
-       delete newState._id;
-
-      }
+      const newState = {...action.payload };
+      return newState;
+    }
     default:
-      return state
+      return state;
   }
 }

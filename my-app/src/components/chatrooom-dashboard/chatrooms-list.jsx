@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 import { getChatrooms} from "../../ApiService";
 import { Chatroom } from "./chatroom";
 
-export function ChatroomsList() {
-  const [chatroomList, setChatroomList] = useState([]);
+export function ChatroomsList({chatroomList,setChatroomList}) {
+
   useEffect(() => {
     // get all the chatrooms on initiation
     (async () => {
@@ -20,7 +20,7 @@ export function ChatroomsList() {
         {chatroomList.map((chatroom) => {
           return (
             <Chatroom
-              key={chatroom._id}
+              key={chatroom.chatroomId}
               chatroom={chatroom}
             />
           );

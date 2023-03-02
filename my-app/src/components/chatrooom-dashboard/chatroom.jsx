@@ -2,17 +2,14 @@ import { getChatroomMessages } from "../../ApiService";
 import { useDispatch } from "react-redux";
 export function Chatroom({ chatroom }) {
   const dispatch = useDispatch();
-  const chatroomId = chatroom._id;
+  const chatroomId = chatroom.chatroomId;
   const lastReceivedMessage = chatroom.messages.slice(-1)[0].text;
   const lastReceivedMessageTimeStamp = chatroom.messages.slice(-1)[0].timeStamp;
-  console.log(lastReceivedMessage);
-   const retrieveChatMessages = async function (e) {
-     console.log("click");
+  const retrieveChatMessages = async function (e) {
      // get the whole chatroom messages
-     console.log(chatroomId);
-     const chatroom = await getChatroomMessages(chatroomId);
+    const chatroom = await getChatroomMessages(chatroomId);
  // update the global state with the selected chatroom details
-     dispatch({ type: "getChatRoomMessages",payload:chatroom });
+     dispatch({ type: "getChatRoomMessages",payload:chatroom[0]});
 
    };
   return (
