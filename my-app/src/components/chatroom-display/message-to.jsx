@@ -1,13 +1,13 @@
-export function MessageTo() {
+export function MessageTo({message}) {
   return (
     <>
        <div className="message_container ">
           <div className="message_to">
             <div className="right_message">
               <div className="right_message_text">
-                Hey there! this is a test message
+             {message.text}
               </div>
-              <div className="message_timeStamp">time stamp</div>
+            <div className="message_timeStamp">{message.timeStamp}</div>
               <div>
                 <a href="#" className="right_message_grammar">
                   check grammar
