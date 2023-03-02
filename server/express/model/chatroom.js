@@ -1,7 +1,8 @@
 const mongoose = require('./db')
 const { Schema } = mongoose;
 const chatroomSchema = new Schema({
-  userid: Number,
+  AI_id: String,
+  language: String,
   messages: [
     {
       messageId: String,
