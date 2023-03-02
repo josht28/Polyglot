@@ -3,6 +3,9 @@ const { Schema } = mongoose;
 const chatroomSchema = new Schema({
   AI_id: String,
   language: String,
+  AI_image: String,
+  AI_name: String,
+  userId: String,
   messages: [
     {
       messageId: String,
@@ -10,8 +13,8 @@ const chatroomSchema = new Schema({
       senderName: String,
       timeStamp: String,
       text: String,
-      translatedText: String
-    }
+      translatedText: String,
+    },
   ],
 });
 module.exports = mongoose.model('chatrooms',chatroomSchema)

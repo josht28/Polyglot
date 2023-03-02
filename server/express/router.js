@@ -6,7 +6,8 @@ const controller = require('./controller/message_controller')
 // 3)/respond
 // 5)/translate
 // 6)/checkgrammar
-router.post('/createNewChat',controller.createChatroom)
+router.post('/createnewchat', controller.createChatroom)
+router.get('/chatrooms',controller.getAllChatrooms)
 router.get('/messages/:id',controller.getChatroomMessages)
 router.post('/message',controller.saveMessage)
 router.post('/respond',controller.respond)
