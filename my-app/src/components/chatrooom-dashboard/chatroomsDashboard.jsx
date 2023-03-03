@@ -7,10 +7,12 @@ export function ChatroomsDashboard() {
     <>
       <div className="chatrooms_display">
         <ChatroomsHeader setChatroomList={setChatroomList} />
-        <ChatroomsList
-          chatroomList={chatroomList}
-          setChatroomList={setChatroomList}
-        />
+        <div className="chatroom_list_background">
+          <ChatroomsList
+            chatroomList={chatroomList}
+            setChatroomList={setChatroomList}
+          />
+        </div>
       </div>
     </>
   );

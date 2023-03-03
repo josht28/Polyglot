@@ -1,3 +1,4 @@
+
 import { createChatRoom } from "../../ApiService";
 import { v4 as uuidv4 } from "uuid";
 export function ChatroomsHeader({setChatroomList}) {
@@ -22,10 +23,10 @@ const chatroomId= uuidv4();
     <>
       <div className="chatrooms_header_wrapper">
         <div className="chatrooms_header_details">
-          <h2>Chats</h2>
-          <button onClick={createChat}> + Create New Chat</button>
+          <h2 className="polyglot_logo">Chats</h2>
+          <button className="create_chat" onClick={createChat}> + Create New Chat</button>
         </div>
-        <div>
+        <div className="chatroom_search_wrapper">
           <input
             className="chatrooms_search"
           placeholder="Search"></input>

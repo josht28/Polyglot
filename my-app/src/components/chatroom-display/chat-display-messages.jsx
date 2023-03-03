@@ -2,7 +2,7 @@ import { Messagefrom } from "./message-from";
 import { MessageTo } from "./message-to";
 import { useSelector } from "react-redux";
 const AI_images = {
-  ChatGPTEnglish: "english user pic",
+  ChatGPTEnglish: "william",
 };
 
 export function ChatDisplayMessage() {
@@ -10,7 +10,6 @@ export function ChatDisplayMessage() {
   const messages = useSelector((state) => state.messages);
   const AI_id = useSelector((state) => state.AI_id);
   const AI_image = AI_images[AI_id];
-  console.log(messages, "<=======look here");
   // map through the messages and check who the senderId belongs to and render accordingly
   return (
     <>
