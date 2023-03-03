@@ -11,6 +11,6 @@ router.get('/chatrooms',controller.getAllChatrooms)
 router.get('/messages/:id',controller.getChatroomMessages)
 router.post('/message',controller.saveMessage)
 router.post('/respond',controller.respond)
-router.post('translate',controller.translateMessage)
-router.post('grammar',controller.checkGrammar)
+router.post('/translate',controller.translateMessage)
+router.post('/grammar',controller.checkGrammar)
 module.exports = router;

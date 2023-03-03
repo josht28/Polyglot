@@ -73,15 +73,23 @@ height:85%;
   margin-right: 30px;
   padding-left: 40px;;
   overflow-y: scroll;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
 }
 .chatrooms_list {
   background-color: white;
-  border-radius: 5px;
+  height: 94%
+
+
 }
+
 .chatroom_wrapper {
   position: relative;
-  margin: 10px 5px;
+  margin: 20px 5px;
+  box-shadow: 15px 7px 40px 3px rgba(254,234,234,0.8);
   height: 80px;
+
+
 }
 .chatroom_details {
   display: flex;
@@ -92,9 +100,7 @@ height:85%;
   width:100%
 
 }
-.polyglot_logo{
 
-}
 .chatrooms_search{
 width:100%;
 height:50px;

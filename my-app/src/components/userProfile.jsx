@@ -13,7 +13,7 @@ export function UserProfile() {
         </div>
         <div>
           <div>
-            <FontAwesomeIcon icon="fa-solid fa-arrow-right-from-bracket" />
+            {/* <FontAwesomeIcon icon="fa-solid fa-arrow-right-from-bracket" /> */}
           </div>
         </div>
       </div>

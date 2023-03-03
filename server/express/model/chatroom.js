@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 const chatroomSchema = new Schema({
   chatroomId :String,
   AI_id: String,
-  language: String,
+  targetLanguage: String,
   AI_image: String,
   AI_name: String,
   userId: String,

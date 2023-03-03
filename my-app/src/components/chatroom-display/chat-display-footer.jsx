@@ -6,6 +6,7 @@ export function ChatDisplayFooter() {
   const data = useSelector((state) => state);
   const senderId = data.userId;
   const chatroomId = data.chatroomId;
+  const targetLanguage = data.targetLanguage;
   const dispatch = useDispatch();
   const handleClick = async function (e) {
     e.preventDefault();
@@ -16,6 +17,7 @@ export function ChatDisplayFooter() {
     const data = {
       chatroomId: chatroomId,
       user_name: "Josh",
+      targetLanguage:targetLanguage,
       messages: {
         messageId: messageId,
         senderId: senderId,
@@ -26,6 +28,7 @@ export function ChatDisplayFooter() {
       },
     };
     const chatroomDetail = await saveMessage(data);
+    console.log(chatroomDetail);
 
     // update the message on the front end
     dispatch({ type: "updatemessages", payload: chatroomDetail});

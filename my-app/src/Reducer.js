@@ -1,12 +1,12 @@
 const initialState = {
   chatroomId: "6400a272301f4a1e487c320b",
   AI_id: "ChatGPTEnglish",
-  language: "English",
-  AI_image: "AI Image",
+  targetLanguage: "English",
+  AI_image: "William",
   AI_name: "William",
   userId: "josh",
   user_name: "Josh",
-  NativeLanguage: "French",
+  nativeLanguage: "French",
   messages: [
     {
       messageId: "",

@@ -2,7 +2,7 @@ import { useEffect} from "react";
 import { getChatrooms} from "../../ApiService";
 import { Chatroom } from "./chatroom";
 
-export function ChatroomsList({chatroomList,setChatroomList}) {
+export function ChatroomsList({ chatroomList, setChatroomList }) {
 
   useEffect(() => {
     // get all the chatrooms on initiation
@@ -13,13 +13,13 @@ export function ChatroomsList({chatroomList,setChatroomList}) {
   }, []);
 
 
-
   return (
     <>
       <div className="chatrooms_list">
         {chatroomList.map((chatroom) => {
           return (
             <Chatroom
+              className="eachChatroom"
               key={chatroom.chatroomId}
               chatroom={chatroom}
             />

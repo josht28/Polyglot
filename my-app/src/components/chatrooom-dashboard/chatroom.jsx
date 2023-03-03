@@ -1,13 +1,13 @@
 import { getChatroomMessages } from "../../ApiService";
-import { useDispatch } from "react-redux";
+import { useDispatch} from "react-redux";
 import moment from "moment";
 
-export function Chatroom({ chatroom }) {
+export function Chatroom({ chatroom}) {
   const dispatch = useDispatch();
+
   const chatroomId = chatroom.chatroomId;
   const lastReceivedMessage = chatroom.messages.slice(-1)[0].text;
   const lastReceivedMessageTimeStamp = chatroom.messages.slice(-1)[0].timeStamp;
-
   const prettyTimestamp = moment(new Date(+lastReceivedMessageTimeStamp)).format(
     "LT"
   );
@@ -24,7 +24,7 @@ export function Chatroom({ chatroom }) {
         <div className="chatroom_details">
           <div className="chatroom_user_details">
             <div className="chatroom_user_image">
-              <img className="AI_image" src={require("../../pics/william.png")}></img></div>
+              <img className="AI_image" src={require(`../../pics/${chatroom.AI_image}.png`)}></img></div>
             <div> {chatroom.AI_name}</div>
           </div>
           <div className="chatroom_date"> {prettyTimestamp}</div>
