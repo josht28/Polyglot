@@ -1,19 +1,39 @@
-import moment from 'moment'
-import { useEffect, useState } from 'react';
-import { translateText } from '../../ApiService';
+import moment from "moment";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { translateText } from "../../ApiService";
 export function Messagefrom({ message, AI_image }) {
-    const prettyTimestamp = moment(new Date(+message.timeStamp)).format(
-    "LT"
-    );
-// creating states to see if translate was requested
-  const [ShowTranslation,setShowTranslation] = useState(false)
+  const prettyTimestamp = moment(new Date(+message.timeStamp)).format("LT");
+  // creating states to see if translate was requested
+  const [ShowTranslation, setShowTranslation] = useState(false);
+  const [translation, setTranslation] = useState("");
+
+  const targetLanguage = useSelector((store) => store.targetLanguage);
+  const nativeLanguage = useSelector((store) => store.nativeLanguage);
+  const chatroomId = useSelector((store) => store.chatroomId);
+
   const translateMessage = async function (e) {
-    console.log("click");
-    console.log(message);
-    // await translateMessage(message);
+    // check if translation already exists
+    if (!(message.translatedText === "")) {
+      console.log("here");
+      setShowTranslation(!ShowTranslation);
+      console.log(ShowTranslation);
+    } else {
+      console.log(message.translatedText);
+      message.targetLanguage = targetLanguage;
+      message.nativeLanguage = nativeLanguage;
+      message.chatroomId = chatroomId;
+      console.log(message);
+      //   const result = await translateText(message);
+      //   console.log(result);
+    }
+
     // flag to show the translated message
-    setShowTranslation((prevState) => !prevState);
-  }
+    //   setShowTranslation((prevState) => !prevState);
+  };
+  useEffect(() => {
+    console.log(ShowTranslation);
+  });
   return (
     <>
       <div className="message_container">
@@ -27,8 +47,11 @@ export function Messagefrom({ message, AI_image }) {
           <div className="left_message">
             <div className="left_message_text mesage_text">{message.text}</div>
             <div>
-              <a href="#" className="message_translate"
-              onClick={translateMessage}>
+              <a
+                href="#"
+                className="message_translate"
+                onClick={translateMessage}
+              >
                 Translate
               </a>
             </div>

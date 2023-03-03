@@ -37,7 +37,7 @@ export const AIresponse = async function (context) {
   return result;
 };
 export const translateText = async function (message) {
-   const response = await fetch(`${URL}respond`, {
+   const response = await fetch(`${URL}translate`, {
      method: "POST",
      headers: { "Content-Type": "application/json" },
      body: JSON.stringify(message),

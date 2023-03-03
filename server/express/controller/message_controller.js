@@ -1,4 +1,4 @@
-const{ v4:uuidv4 } = require("uuid");
+const { v4: uuidv4 } = require("uuid");
 const deepl = require("deepl-node");
 const chatroom = require("../model/chatroom");
 require("dotenv").config();
@@ -54,7 +54,6 @@ const saveMessage = async function (req, res) {
       },
       { returnOriginal: false }
     );
-    console.log(savedMessage);
     res.status(201);
     res.send(savedMessage);
   } catch (error) {
@@ -76,13 +75,10 @@ const respond = async function (req, res) {
   if (previousMessages.length >= 3) {
     context = req.body.messages.slice(-3);
     prompt = `${AI_name} is gen-z, and a close friend of ${user_name}. respond in ${targetLanguage}\n${context[0].senderName}: ${context[0].text} \n${context[1].senderName}: ${context[1].text}\n${context[2].senderName}:${context[2].text}\n${AI_name}:`;
-  }
-
-else {
+  } else {
     context = previousMessages;
     prompt = `${AI_name} is gen-z, and a close friend of ${user_name}. respond in ${targetLanguage}\n${context[0].senderName}: ${context[0].text} \n${context[1].senderName}: ${context[1].text}\n${AI_name}:`;
   }
-
 
   console.log(prompt);
 
@@ -114,7 +110,6 @@ else {
       },
       { returnOriginal: false }
     );
-    console.log(savedMessage);
     res.status(201);
     res.send(savedMessage);
   } catch (error) {
@@ -123,17 +118,58 @@ else {
 };
 
 const translateMessage = async function (req, res) {
-  // const text = req.body.text;
-  // const targetLanguage = req.body.targetLanguage;
-  // const nativeLanguage = req.body.nativeLanguage;
-  const sourceLanguages = await translator.getSourceLanguages();
-  for (let i = 0; i < sourceLanguages.length; i++) {
-    const lang = sourceLanguages[i];
-    console.log(`${lang.name} (${lang.code})`); // Example: 'English (en)'
-  }
+  // data for mapping language for API call
+  const translateData = {
+    Czech: "cs",
+    Danish: "da",
+    German: "de",
+    English: "en",
+    Spanish: "es",
+    French: "fr",
+    Indonesian: "id",
+    Italian: "it",
+    Japanese: "ja",
+    Korean: "ko",
+    Norwegian: "nb",
+    Dutch: "nl",
+    Polish: "pl",
+    Portuguese: "pt",
+    Romanian: "ro",
+    Russian: "ru",
+    Swedish: "sv",
+    Turkish: "tr",
+    Ukrainian: "uk",
+    Chinese: "zh",
+  };
+  const data = req.body;
+  const chatroomId = data.chatroomId;
+  const messageId = data.messageId;
+  const targetLanguage = translateData[data.targetLanguage];
+  const nativeLanguage = translateData[data.nativeLanguage];
+  const text = data.text;
+  let translationExists = false;
+  
+  // make API call to deepL to translate
+  const translationResult = await translator.translateText(
+    text,
+    targetLanguage,
+    nativeLanguage
+  );
+  // find the the chatroom to whihc the message belong to
+  let chats = await chatroom.find({ chatroomId: chatroomId });
+
+  // loop through the messages and update the translated field
+  chats[0].messages.forEach((message) => {
+    if (message.messageId === messageId)
+      message.translatedText = translationResult.text;
+  });
+  // save the entire chatroom to the database
+  await chats[0].save();
+
+  console.log(translationResult.text);
+  // send the updated chatroom back to the front to render
   res.status(200);
-  res.send("trsnlating");
-  // const translationResult = await translator.translateText(`${text},${targetLanguage},${nativeLanguage}`);
+  res.send(chats[0]);
 };
 const checkGrammar = function (req, res) {};
 module.exports = {

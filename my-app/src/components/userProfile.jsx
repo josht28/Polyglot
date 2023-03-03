@@ -1,5 +1,6 @@
-import { useSelector } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons/faArrowRightFromBracket";
 export function UserProfile() {
   const user_name = useSelector((state) => state.user_name);
   return (
@@ -13,7 +14,7 @@ export function UserProfile() {
         </div>
         <div>
           <div>
-            {/* <FontAwesomeIcon icon="fa-solid fa-arrow-right-from-bracket" /> */}
+            <FontAwesomeIcon icon={faArrowRightFromBracket} />
           </div>
         </div>
       </div>
