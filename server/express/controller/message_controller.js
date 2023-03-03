@@ -6,7 +6,6 @@ const { Configuration, OpenAIApi } = require("openai");
 const configuration = new Configuration({
   apiKey: process.env.chatGPT_key,
 });
-console.log(process.env.chatGPT_key);
 const openai = new OpenAIApi(configuration);
 
 const createChatroom = async function (req, res) {
