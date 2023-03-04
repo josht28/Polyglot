@@ -69,11 +69,6 @@ setShowTranslation(!ShowTranslation);
                 </a>
               )}
             </div>
-            <div>
-              <a href="#" className="message_grammar">
-                check grammar
-              </a>
-            </div>
             <div className="message_timeStamp"> {prettyTimestamp}</div>
           </div>
         </div>

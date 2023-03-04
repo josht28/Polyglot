@@ -144,8 +144,9 @@ background-color: white;
   scroll-behavior: smooth;
 }
 .message_container {
+  position:relative;
   transition: all ease 2s;
-  height: 120px;
+  min-height: 120px;
   margin: 20px;
 }
 .message_from {
@@ -184,7 +185,7 @@ a {
 .message_translate {
   position: absolute;
   bottom: 10px;
-  left: 100px;
+  left: 10px;
 }
 .message_translate:hover{
   font-size:0.7rem;
@@ -209,16 +210,27 @@ a {
   box-shadow: 15px 7px 40px 3px rgba(254,234,234,0.8);
   border:1px solid rgba(254,234,234,0.6);
   width: 60%;
-  height: 80px;
+  padding-bottom:30px;
+  min-height: 90px;
   border-radius: 7px 0px 7px 7px;
   background-color: white;
   position: relative;
   margin-right: 20px;
 }
+.right_message_layout{
+display: flex;
+flex-direction: column;
+align-items: flex-end;
+
+}
+.grammar_response{
+  font-size: 0.7rem;
+  font-style: italic;
+  align-self: flex-start;
+  padding: 10px
+}
 .right_message_text {
-  position: absolute;
-  right: 10px;
-  top: 10px;
+padding:10px 10px 0px 0px;
 }
 .right_message_grammar {
   color: black;
@@ -243,6 +255,7 @@ a {
 		opacity: 1;
 	}
 }
+
 
 
 .translated_text{
