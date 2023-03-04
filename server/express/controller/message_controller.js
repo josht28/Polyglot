@@ -16,10 +16,10 @@ const createChatroom = async function (req, res) {
   let data = req.body;
   try {
     let result = await chatroom.create(data);
-    console.log(result);
     res.status(201);
     res.send(result);
   } catch (error) {
+    res.status(500);
     console.log(error);
   }
 };
@@ -29,6 +29,8 @@ const getAllChatrooms = async function (req, res) {
     res.status(200);
     res.send(chatrooms);
   } catch (error) {
+
+    res.status(500);
     console.log(error);
   }
 };
@@ -40,6 +42,7 @@ const getChatroomMessages = async function (req, res) {
     res.status(200);
     res.send(ChatroomMessages);
   } catch (error) {
+    res.status(500);
     console.log(error);
   }
 };
@@ -57,18 +60,18 @@ const saveMessage = async function (req, res) {
     res.status(201);
     res.send(savedMessage);
   } catch (error) {
+    res.status(500);
     console.log(error);
   }
 };
 const respond = async function (req, res) {
-  // take the last three conversation to give context
   let AI_id = req.body.AI_id;
   let AI_name = req.body.AI_name;
   let user_name = req.body.user_name;
   let targetLanguage = req.body.targetLanguage;
   let chatroomId = req.body.chatroomId;
-  console.log(AI_name);
-  // slicde the last three convesations
+
+  // take the last three conversation to give context to the API
   let previousMessages = req.body.messages;
   let context;
   let prompt = "";
@@ -79,9 +82,7 @@ const respond = async function (req, res) {
     context = previousMessages;
     prompt = `${AI_name} is gen-z, and a close friend of ${user_name}. respond in ${targetLanguage}\n${context[0].senderName}: ${context[0].text} \n${context[1].senderName}: ${context[1].text}\n${AI_name}:`;
   }
-
-  console.log(prompt);
-
+try {
   const response = await openai.createCompletion({
     model: "text-davinci-003",
     prompt: prompt,
@@ -101,10 +102,8 @@ const respond = async function (req, res) {
     text: text,
     translatedText: "",
   };
-
-  try {
-    let savedMessage = await chatroom.findOneAndUpdate(
-      { chatroomId: chatroomId },
+let savedMessage = await chatroom.findOneAndUpdate(
+  { chatroomId: chatroomId },
       {
         $push: { messages: data },
       },
@@ -112,8 +111,9 @@ const respond = async function (req, res) {
     );
     res.status(201);
     res.send(savedMessage);
-  } catch (error) {
-    console.log(error);
+} catch (error) {
+  res.status(500);
+    console.log(`error during generating response: ${error}`);
   }
 };
 
@@ -144,16 +144,15 @@ const translateMessage = async function (req, res) {
   const data = req.body;
   const chatroomId = data.chatroomId;
   const messageId = data.messageId;
-  const targetLanguage = translateData[data.targetLanguage];
   const nativeLanguage = translateData[data.nativeLanguage];
   const text = data.text;
   let translationExists = false;
-
+  console.log(`${text},null,${nativeLanguage}`);
   try {
-    // make API call to deepL to translate.
+    // make API call to deepL to translate. second argument is null as it will detect the source language
     const translationResult = await translator.translateText(
       text,
-      targetLanguage,
+      null,
       nativeLanguage
     );
     // find the the chatroom to which the message belongs to
@@ -166,8 +165,6 @@ const translateMessage = async function (req, res) {
     });
     // save the entire chatroom to the database
     await chats[0].save();
-
-    console.log(translationResult.text);
     // send the updated chatroom back to the front to render
     res.status(200);
     res.send(chats[0]);

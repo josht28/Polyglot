@@ -1,5 +1,4 @@
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
 export function ChatDisplayHeader() {
   const AI_image = useSelector((state) => state.AI_image);
   const AI_name = useSelector((state) => state.AI_name);

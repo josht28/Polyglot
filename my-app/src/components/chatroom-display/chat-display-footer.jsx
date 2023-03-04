@@ -2,12 +2,20 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { saveMessage, AIresponse } from "../../ApiService";
 import { v4 as uuidv4 } from "uuid";
+import { useState } from "react";
 export function ChatDisplayFooter() {
   const data = useSelector((state) => state);
   const senderId = data.userId;
   const chatroomId = data.chatroomId;
   const targetLanguage = data.targetLanguage;
   const dispatch = useDispatch();
+  // state to handle the text input field
+  const [Txt, SetTxt] = useState("");
+  const changeTxt = function (event) {
+    SetTxt(event.target.value);
+
+  }
+
   const handleClick = async function (e) {
     e.preventDefault();
     const text = e.target.message.value;
@@ -27,8 +35,10 @@ export function ChatDisplayFooter() {
         translatedText: "",
       },
     };
+    //reset the inout field
+    SetTxt("");
+    //save the message to the database
     const chatroomDetail = await saveMessage(data);
-    console.log(chatroomDetail);
 
     // update the message on the front end
     dispatch({ type: "updatemessages", payload: chatroomDetail});
@@ -44,8 +54,11 @@ export function ChatDisplayFooter() {
         <input
           className="footer_input"
           type="text"
-          name="message"
+          onChange={(changeTxt)}
+          name = "message"
+          value ={Txt}
           placeholder="Type a message here"
+          autoComplete="off"
         ></input>
         <button className="footer_button"> send button </button>
       </form>

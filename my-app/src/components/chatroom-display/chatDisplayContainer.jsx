@@ -8,7 +8,6 @@ export function ChatDisplayContainer() {
         <ChatDisplayHeader />
         <ChatDisplayMessage />
         <ChatDisplayFooter />
-
       </div>
     </>
   );
