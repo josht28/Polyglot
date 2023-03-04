@@ -13,8 +13,8 @@ export function Messagefrom({ message, AI_image }) {
 
   const translateMessage = async function (e) {
     // check if translation already exists
-    if (!(message.translatedText === "")) {
-setShowTranslation(!ShowTranslation);
+    if ((message.translatedText !== "")) {
+    setShowTranslation(!ShowTranslation);
     } else {
       message.targetLanguage = targetLanguage;
       message.nativeLanguage = nativeLanguage;

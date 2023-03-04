@@ -1,7 +1,7 @@
 import moment from "moment";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { checkGrammar } from "../../ApiService";
+import { checkGrammar,translateGrammar } from "../../ApiService";
 export function MessageTo({ message }) {
   const prettyTimestamp = moment(new Date(+message.timeStamp)).format("LT");
   // state to check if grammar needs to be checked
@@ -11,35 +11,44 @@ export function MessageTo({ message }) {
 
   // state to store the translation of the grammar explanation
   const [GrammarTranslation, SetGrammarTranslation] = useState("");
+  // State to check if the translation already was made
+  const [TranslationExists, SetTranslationExists] = useState(false);
 
   const targetLanguage = useSelector((state) => state.targetLanguage);
   const nativeLanguage = useSelector((state) => state.nativeLanguage);
   const amICorrect = async function () {
+
     // if the response was already generated serve that to the user else make an API call
     if (GrammarResponse === "") {
-      message.targetLanguage = targetLanguage;
-      console.log(message);
       console.log("clicked");
+      message.targetLanguage = targetLanguage;
       let response = await checkGrammar(message);
-      console.log(response);
       // save this response and serve to the user
-      // let response = "testing"
       SetGrammarResponse(response);
       SetRevealGrammar(!RevealGrammar);
-      console.log(RevealGrammar);
     } else {
       SetRevealGrammar(!RevealGrammar);
     }
   };
 
-  const helpMeUnderstand = function () {
+  const helpMeUnderstand = async function () {
     if (GrammarTranslation === "") {
-      
+      let data = {
+        nativeLanguage: nativeLanguage,
+        text:GrammarResponse
+      }
+      console.log(data);
+      let translatedText = await translateGrammar(data);
+      console.log(translatedText);
+      SetGrammarTranslation(translatedText)
+      SetTranslationExists(!TranslationExists);
+      console.log(TranslationExists);
     }
     else {
-
+      SetTranslationExists(!TranslationExists);
+      console.log(TranslationExists);
     }
-  }
+  };
   return (
     <>
       <div className="message_container ">
@@ -50,7 +59,13 @@ export function MessageTo({ message }) {
                 {message.text}
               </div>
               {RevealGrammar ? (
-                <div className="grammar_response">{GrammarResponse}</div>
+                <>
+                  {TranslationExists ? (
+                    <div className="grammar_response">{GrammarTranslation}</div>
+                  ) : (
+                    <div className="grammar_response">{GrammarResponse}</div>
+                  )}{" "}
+                </>
               ) : (
                 ""
               )}
@@ -71,14 +86,13 @@ export function MessageTo({ message }) {
                   className="right_message_grammar"
                   onClick={amICorrect}
                 >
-                  {" "}
                   Check my grammar
                 </a>
               )}
             </div>
             <div>
               {RevealGrammar ? (
-                 <a
+                <a
                   href="#"
                   className="right_message_traslate"
                   onClick={helpMeUnderstand}

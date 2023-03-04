@@ -16,7 +16,7 @@ export function ChatDisplayFooter() {
 
   }
 
-  const handleClick = async function (e) {
+  const handleSubmit = async function (e) {
     e.preventDefault();
     const text = e.target.message.value;
     // create a unique message id
@@ -50,7 +50,7 @@ export function ChatDisplayFooter() {
   };
   return (
     <>
-      <form className="message_footer_wrapper" onSubmit={handleClick}>
+      <form className="message_footer_wrapper" onSubmit={handleSubmit}>
         <input
           className="footer_input"
           type="text"

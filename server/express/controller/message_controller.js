@@ -9,34 +9,36 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
+// data for Deepl translation
+const translateData = {
+  Czech: "cs",
+  Danish: "da",
+  German: "de",
+  English: "en-GB",
+  Spanish: "es",
+  French: "fr",
+  Indonesian: "id",
+  Italian: "it",
+  Japanese: "ja",
+  Korean: "ko",
+  Norwegian: "nb",
+  Dutch: "nl",
+  Polish: "pl",
+  Portuguese: "pt",
+  Romanian: "ro",
+  Russian: "ru",
+  Swedish: "sv",
+  Turkish: "tr",
+  Ukrainian: "uk",
+  Chinese: "zh",
+};
+
 // connection to DeepL API for translation
 const translator = new deepl.Translator(process.env.deepLAuthKey);
 
-const createChatroom = async function (req, res) {
-  let data = req.body;
-  try {
-    let result = await chatroom.create(data);
-    res.status(201);
-    res.send(result);
-  } catch (error) {
-    res.status(500);
-    console.log(`error while creating the chatroom:${error}`);
-  }
-};
-const getAllChatrooms = async function (req, res) {
-  try {
-    const chatrooms = await chatroom.find({});
-    res.status(200);
-    res.send(chatrooms);
-  } catch (error) {
-    res.status(500);
-    console.log(`error while fetching chatroom details: ${error}`);
-  }
-};
-
 const getChatroomMessages = async function (req, res) {
-  const chatroomId = req.params.id;
   try {
+     const chatroomId = req.params.id;
     const ChatroomMessages = await chatroom.find({ chatroomId: chatroomId });
     res.status(200);
     res.send(ChatroomMessages);
@@ -118,34 +120,11 @@ const respond = async function (req, res) {
 
 const translateMessage = async function (req, res) {
   // data for mapping language for API call
-  const translateData = {
-    Czech: "cs",
-    Danish: "da",
-    German: "de",
-    English: "en-GB",
-    Spanish: "es",
-    French: "fr",
-    Indonesian: "id",
-    Italian: "it",
-    Japanese: "ja",
-    Korean: "ko",
-    Norwegian: "nb",
-    Dutch: "nl",
-    Polish: "pl",
-    Portuguese: "pt",
-    Romanian: "ro",
-    Russian: "ru",
-    Swedish: "sv",
-    Turkish: "tr",
-    Ukrainian: "uk",
-    Chinese: "zh",
-  };
   const data = req.body;
   const chatroomId = data.chatroomId;
   const messageId = data.messageId;
   const nativeLanguage = translateData[data.nativeLanguage];
   const text = data.text;
-  let translationExists = false;
   console.log(`${text},null,${nativeLanguage}`);
   try {
     // make API call to deepL to translate. second argument is null as it will detect the source language
@@ -172,6 +151,19 @@ const translateMessage = async function (req, res) {
     console.log(`error while translating":${ error }`);
   }
 };
+const translateGrammar = async function (req, res) {
+  try {
+   const text = req.body.text
+    let nativeLanguage = translateData[req.body.nativeLanguage];
+    const translationResult = await translator.translateText(text, null, nativeLanguage);
+    res.status(200);
+    res.send({ data: translationResult.text });
+  } catch (error) {
+    res.status(500);
+    console.log(`error while translating grammar:{$error}`);
+
+ }
+}
 const checkGrammar = async function (req, res) {
   const targetLanguage = req.body.targetLanguage;
   const text = req.body.text;
@@ -200,6 +192,5 @@ module.exports = {
   respond,
   translateMessage,
   checkGrammar,
-  createChatroom,
-  getAllChatrooms,
+  translateGrammar,
 };
