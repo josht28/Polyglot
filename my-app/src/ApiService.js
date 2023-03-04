@@ -45,3 +45,13 @@ export const translateText = async function (message) {
    const result = await response.json();
    return result;
 }
+export const checkGrammar = async function (message) {
+  const response = await fetch(`${URL}grammar`, {
+     method: "POST",
+     headers: { "Content-Type": "application/json" },
+     body: JSON.stringify(message),
+   });
+  const result = await response.json();
+  const data = await result.data
+  return data;
+}

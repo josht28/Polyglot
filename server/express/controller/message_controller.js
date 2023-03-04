@@ -29,7 +29,6 @@ const getAllChatrooms = async function (req, res) {
     res.status(200);
     res.send(chatrooms);
   } catch (error) {
-
     res.status(500);
     console.log(error);
   }
@@ -82,28 +81,28 @@ const respond = async function (req, res) {
     context = previousMessages;
     prompt = `${AI_name} is gen-z, and a close friend of ${user_name}. respond in ${targetLanguage}\n${context[0].senderName}: ${context[0].text} \n${context[1].senderName}: ${context[1].text}\n${AI_name}:`;
   }
-try {
-  const response = await openai.createCompletion({
-    model: "text-davinci-003",
-    prompt: prompt,
-    temperature: 1,
-    max_tokens: 200,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0.26,
-  });
-  const text = response.data.choices[0].text;
-  let messageId = uuidv4();
-  const data = {
-    messageId: messageId,
-    senderId: AI_id,
-    senderName: AI_name,
-    timeStamp: Date.now(),
-    text: text,
-    translatedText: "",
-  };
-let savedMessage = await chatroom.findOneAndUpdate(
-  { chatroomId: chatroomId },
+  try {
+    const response = await openai.createCompletion({
+      model: "text-davinci-003",
+      prompt: prompt,
+      temperature: 1,
+      max_tokens: 200,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0.26,
+    });
+    const text = response.data.choices[0].text;
+    let messageId = uuidv4();
+    const data = {
+      messageId: messageId,
+      senderId: AI_id,
+      senderName: AI_name,
+      timeStamp: Date.now(),
+      text: text,
+      translatedText: "",
+    };
+    let savedMessage = await chatroom.findOneAndUpdate(
+      { chatroomId: chatroomId },
       {
         $push: { messages: data },
       },
@@ -111,8 +110,8 @@ let savedMessage = await chatroom.findOneAndUpdate(
     );
     res.status(201);
     res.send(savedMessage);
-} catch (error) {
-  res.status(500);
+  } catch (error) {
+    res.status(500);
     console.log(`error during generating response: ${error}`);
   }
 };
@@ -168,13 +167,33 @@ const translateMessage = async function (req, res) {
     // send the updated chatroom back to the front to render
     res.status(200);
     res.send(chats[0]);
-
   } catch (error) {
     res.status(500);
     console.log(error);
   }
 };
-const checkGrammar = function (req, res) {};
+const checkGrammar = async function (req, res) {
+  const targetLanguage = req.body.targetLanguage;
+  const text = req.body.text;
+  let prompt = `you are a teacher,check grammatical mistake of "${text}",repsond in ${targetLanguage}.`;
+  try {
+    const response = await openai.createCompletion({
+      model: "text-davinci-003",
+      prompt: prompt,
+      temperature: 1,
+      max_tokens: 200,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0.26,
+    });
+    const result = response.data.choices[0].text;
+    res.status(200);
+    res.send({ data: result });
+  } catch (error) {
+    res.status(500);
+    console.log(`error while checking grammar:${error}`);
+  }
+};
 module.exports = {
   getChatroomMessages,
   saveMessage,
