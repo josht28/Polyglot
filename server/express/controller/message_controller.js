@@ -20,7 +20,7 @@ const createChatroom = async function (req, res) {
     res.send(result);
   } catch (error) {
     res.status(500);
-    console.log(error);
+    console.log(`error while creating the chatroom:${error}`);
   }
 };
 const getAllChatrooms = async function (req, res) {
@@ -30,7 +30,7 @@ const getAllChatrooms = async function (req, res) {
     res.send(chatrooms);
   } catch (error) {
     res.status(500);
-    console.log(error);
+    console.log(`error while fetching chatroom details: ${error}`);
   }
 };
 
@@ -42,7 +42,7 @@ const getChatroomMessages = async function (req, res) {
     res.send(ChatroomMessages);
   } catch (error) {
     res.status(500);
-    console.log(error);
+    console.log(`error while retrieving the chatroom messages${error}`);
   }
 };
 const saveMessage = async function (req, res) {
@@ -60,7 +60,7 @@ const saveMessage = async function (req, res) {
     res.send(savedMessage);
   } catch (error) {
     res.status(500);
-    console.log(error);
+    console.log(`error while saving the messages to the database: ${error}`);
   }
 };
 const respond = async function (req, res) {
@@ -169,7 +169,7 @@ const translateMessage = async function (req, res) {
     res.send(chats[0]);
   } catch (error) {
     res.status(500);
-    console.log(error);
+    console.log(`error while translating":${ error }`);
   }
 };
 const checkGrammar = async function (req, res) {

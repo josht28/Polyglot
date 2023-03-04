@@ -7,9 +7,13 @@ export function MessageTo({ message }) {
   // state to check if grammar needs to be checked
   const [RevealGrammar, SetRevealGrammar] = useState(false);
   // state for storing the response
-  const [GrammarResponse, SetGrammarResponse] = useState("")
+  const [GrammarResponse, SetGrammarResponse] = useState("");
+
+  // state to store the translation of the grammar explanation
+  const [GrammarTranslation, SetGrammarTranslation] = useState("");
 
   const targetLanguage = useSelector((state) => state.targetLanguage);
+  const nativeLanguage = useSelector((state) => state.nativeLanguage);
   const amICorrect = async function () {
     // if the response was already generated serve that to the user else make an API call
     if (GrammarResponse === "") {
@@ -20,14 +24,22 @@ export function MessageTo({ message }) {
       console.log(response);
       // save this response and serve to the user
       // let response = "testing"
-      SetGrammarResponse(response)
+      SetGrammarResponse(response);
       SetRevealGrammar(!RevealGrammar);
       console.log(RevealGrammar);
-    }
-    else {
+    } else {
       SetRevealGrammar(!RevealGrammar);
     }
   };
+
+  const helpMeUnderstand = function () {
+    if (GrammarTranslation === "") {
+      
+    }
+    else {
+
+    }
+  }
   return (
     <>
       <div className="message_container ">
@@ -38,22 +50,44 @@ export function MessageTo({ message }) {
                 {message.text}
               </div>
               {RevealGrammar ? (
-                <div className="grammar_response">
-                  {GrammarResponse}
-                </div>
+                <div className="grammar_response">{GrammarResponse}</div>
               ) : (
                 ""
               )}
             </div>
             <div className="message_timeStamp">{prettyTimestamp}</div>
             <div>
-              <a
-                href="#"
-                className="right_message_grammar"
-                onClick={amICorrect}
-              >
-                check grammar
-              </a>
+              {RevealGrammar ? (
+                <a
+                  href="#"
+                  className="right_message_grammar"
+                  onClick={amICorrect}
+                >
+                  Hide
+                </a>
+              ) : (
+                <a
+                  href="#"
+                  className="right_message_grammar"
+                  onClick={amICorrect}
+                >
+                  {" "}
+                  Check my grammar
+                </a>
+              )}
+            </div>
+            <div>
+              {RevealGrammar ? (
+                 <a
+                  href="#"
+                  className="right_message_traslate"
+                  onClick={helpMeUnderstand}
+                >
+                  Help me understand in {nativeLanguage}
+                </a>
+              ) : (
+                ""
+              )}
             </div>
           </div>
         </div>
