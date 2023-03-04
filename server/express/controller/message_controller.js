@@ -123,7 +123,7 @@ const translateMessage = async function (req, res) {
     Czech: "cs",
     Danish: "da",
     German: "de",
-    English: "en",
+    English: "en-GB",
     Spanish: "es",
     French: "fr",
     Indonesian: "id",
@@ -148,28 +148,34 @@ const translateMessage = async function (req, res) {
   const nativeLanguage = translateData[data.nativeLanguage];
   const text = data.text;
   let translationExists = false;
-  
-  // make API call to deepL to translate
-  const translationResult = await translator.translateText(
-    text,
-    targetLanguage,
-    nativeLanguage
-  );
-  // find the the chatroom to whihc the message belong to
-  let chats = await chatroom.find({ chatroomId: chatroomId });
 
-  // loop through the messages and update the translated field
-  chats[0].messages.forEach((message) => {
-    if (message.messageId === messageId)
-      message.translatedText = translationResult.text;
-  });
-  // save the entire chatroom to the database
-  await chats[0].save();
+  try {
+    // make API call to deepL to translate.
+    const translationResult = await translator.translateText(
+      text,
+      targetLanguage,
+      nativeLanguage
+    );
+    // find the the chatroom to which the message belongs to
+    let chats = await chatroom.find({ chatroomId: chatroomId });
 
-  console.log(translationResult.text);
-  // send the updated chatroom back to the front to render
-  res.status(200);
-  res.send(chats[0]);
+    // loop through the messages and update the translated field
+    chats[0].messages.forEach((message) => {
+      if (message.messageId === messageId)
+        message.translatedText = translationResult.text;
+    });
+    // save the entire chatroom to the database
+    await chats[0].save();
+
+    console.log(translationResult.text);
+    // send the updated chatroom back to the front to render
+    res.status(200);
+    res.send(chats[0]);
+
+  } catch (error) {
+    res.status(500);
+    console.log(error);
+  }
 };
 const checkGrammar = function (req, res) {};
 module.exports = {

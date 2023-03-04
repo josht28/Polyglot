@@ -1,5 +1,5 @@
 import moment from "moment";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { translateText } from "../../ApiService";
 export function Messagefrom({ message, AI_image }) {
@@ -7,10 +7,10 @@ export function Messagefrom({ message, AI_image }) {
   // creating states to see if translate was requested
   const [ShowTranslation, setShowTranslation] = useState(false);
   const [translation, setTranslation] = useState("");
-
   const targetLanguage = useSelector((store) => store.targetLanguage);
   const nativeLanguage = useSelector((store) => store.nativeLanguage);
   const chatroomId = useSelector((store) => store.chatroomId);
+  const dispatch = useDispatch();
 
   const translateMessage = async function (e) {
     // check if translation already exists
@@ -24,16 +24,16 @@ export function Messagefrom({ message, AI_image }) {
       message.nativeLanguage = nativeLanguage;
       message.chatroomId = chatroomId;
       console.log(message);
-      //   const result = await translateText(message);
-      //   console.log(result);
+        const result = await translateText(message);
+      console.log(result);
+      dispatch({ type: "updatemessages", payload: result });
+      setShowTranslation(!ShowTranslation);
+      console.log(ShowTranslation);
     }
 
     // flag to show the translated message
     //   setShowTranslation((prevState) => !prevState);
   };
-  useEffect(() => {
-    console.log(ShowTranslation);
-  });
   return (
     <>
       <div className="message_container">
@@ -45,15 +45,34 @@ export function Messagefrom({ message, AI_image }) {
             ></img>
           </div>
           <div className="left_message">
-            <div className="left_message_text mesage_text">{message.text}</div>
+            {!ShowTranslation ? (
+              <div className="left_message_text message_text">
+                {message.text}
+              </div>
+            ) : (
+              <div className="left_message_text translated_text">
+                {message.translatedText}
+              </div>
+            )}
+
             <div>
-              <a
-                href="#"
-                className="message_translate"
-                onClick={translateMessage}
-              >
-                Translate
-              </a>
+              {ShowTranslation ? (
+                <a
+                  href="#"
+                  className="message_translate"
+                  onClick={translateMessage}
+                >
+                  Show original
+                </a>
+              ) : (
+                <a
+                  href="#"
+                  className="message_translate"
+                  onClick={translateMessage}
+                >
+                  Translate
+                </a>
+              )}
             </div>
             <div>
               <a href="#" className="message_grammar">
