@@ -310,6 +310,7 @@ animation: Ease_in 0.75s ease 0s 1 normal none;
 }
 .chatroom_user_image {
   margin: 5px;
+  
 }
 .user_image {
   width: 40px;

@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { saveMessage, AIresponse } from "../../ApiService";
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import{faPaperPlane} from "@fortawesome/free-solid-svg-icons/faPaperPlane"
 export function ChatDisplayFooter() {
   const data = useSelector((state) => state);
   const senderId = data.userId;
@@ -18,7 +20,6 @@ export function ChatDisplayFooter() {
 
   const handleSubmit = async function (e) {
     e.preventDefault();
-    const text = e.target.message.value;
     // create a unique message id
     const messageId = uuidv4();
     // create the data to be send to the database
@@ -31,11 +32,12 @@ export function ChatDisplayFooter() {
         senderId: senderId,
         senderName: "Josh",
         timeStamp: Date.now(),
-        text: text,
+        text: Txt,
         translatedText: "",
       },
     };
-    //reset the inout field
+    console.log("clicked");
+    // reset the inout field
     SetTxt("");
     //save the message to the database
     const chatroomDetail = await saveMessage(data);
@@ -50,17 +52,17 @@ export function ChatDisplayFooter() {
   };
   return (
     <>
-      <form className="message_footer_wrapper" onSubmit={handleSubmit}>
+      <form className="message_footer_wrapper">
         <input
           className="footer_input"
           type="text"
-          onChange={(changeTxt)}
-          name = "message"
-          value ={Txt}
+          onChange={changeTxt}
+          name="message"
+          value={Txt}
           placeholder="Type a message here"
           autoComplete="off"
         ></input>
-        <button className="footer_button"> send button </button>
+        <FontAwesomeIcon onClick={handleSubmit} icon={faPaperPlane} />
       </form>
     </>
   );

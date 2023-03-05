@@ -2,6 +2,7 @@ import moment from "moment";
 import { useSelector,useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { translateText } from "../../ApiService";
+import {Image} from 'cloudinary-react'
 export function Messagefrom({ message, AI_image }) {
   const prettyTimestamp = moment(new Date(+message.timeStamp)).format("LT");
   // creating states to see if translate was requested
@@ -34,10 +35,13 @@ export function Messagefrom({ message, AI_image }) {
       <div className="message_container">
         <div className="message_from">
           <div className="left_message_user">
-            <img
-              className="AI_image"
-              src={require(`../../pics/${AI_image}.png`)}
-            ></img>
+            <Image
+              cloudName="dayg41e9c"
+              publicId={AI_image}
+              width="40"
+              height="40"
+              radius="max"
+            />
           </div>
           <div className="left_message">
             {!ShowTranslation ? (
