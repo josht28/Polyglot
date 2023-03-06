@@ -22,7 +22,6 @@ export function ChatroomsList() {
       // display the first chatroom messages
       dispatch({ type: "getChatRoomMessages", payload: sortedChatrooms[0]});
     })();
-    console.log(chatroomList);
   }, []);
 
 
@@ -30,7 +29,6 @@ export function ChatroomsList() {
     <>
       <div className="chatrooms_list">
         {chatroomList.map((chatroom) => {
-          console.log(chatroom.AI_name);
           return (
             <Chatroom
               className="eachChatroom"

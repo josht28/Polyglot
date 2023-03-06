@@ -1,11 +1,13 @@
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { saveMessage, AIresponse } from "../../ApiService";
+import { saveMessage, AIresponse} from "../../ApiService";
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons/faPaperPlane"
-import {faMicrophoneLines} from "@fortawesome/free-solid-svg-icons/faMicrophoneLines"
+import { VoiceRecording } from "./voice-recording";
+
+
 export function ChatDisplayFooter() {
   const data = useSelector((state) => state.ChatReducer);
   const senderId = data.userId;
@@ -53,10 +55,11 @@ export function ChatDisplayFooter() {
         dispatch({ type: "updatemessages", payload: response });
     }
   };
+
   return (
     <>
       <form className="message_footer_wrapper">
-        <FontAwesomeIcon className="speak" icon={faMicrophoneLines} />
+      <VoiceRecording />
         <input
           className="footer_input"
           type="text"

@@ -1,6 +1,7 @@
 const { v4: uuidv4 } = require("uuid");
 const deepl = require("deepl-node");
 const chatroom = require("../model/chatroom");
+const fs = require('fs');
 require("dotenv").config();
 // connection to openAI API
 const { Configuration, OpenAIApi } = require("openai");
@@ -186,6 +187,8 @@ const checkGrammar = async function (req, res) {
     console.log(`error while checking grammar:${error}`);
   }
 };
+
+
 module.exports = {
   getChatroomMessages,
   saveMessage,
