@@ -2,8 +2,8 @@ import { useSelector } from "react-redux";
 import { Image,Transformation } from 'cloudinary-react'
 
 export function ChatDisplayHeader() {
-  const AI_image = useSelector((state) => state.AI_image);
-  const AI_name = useSelector((state) => state.AI_name);
+  const AI_image = useSelector((state) => state.ChatReducer.AI_image);
+  const AI_name = useSelector((state) => state.ChatReducer.AI_name);
   console.log(AI_image);
   return (
     <>

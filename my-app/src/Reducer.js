@@ -1,12 +1,13 @@
+import {combineReducers} from 'redux'
 const initialState = {
-  chatroomId: "6400a272301f4a1e487c320b",
-  AI_id: "ChatGPTEnglish",
-  targetLanguage: "English",
-  AI_image: "William",
-  AI_name: "William",
+  chatroomId: "",
+  AI_id: "",
+  targetLanguage: "",
+  AI_image: "",
+  AI_name: "",
   userId: "josh",
   user_name: "Josh",
-  nativeLanguage: "French",
+  nativeLanguage: "",
   messages: [
     {
       messageId: "",
@@ -18,9 +19,14 @@ const initialState = {
     },
   ],
 };
+const initalChatroomList = {
+  chatroomList:[]
+}
 const GETCHATROOMMESSAGES = "getChatRoomMessages";
 const UPDATEMESSAGES = "updatemessages";
-export default function Reducer(state = initialState, action) {
+const UPDATECHATROOMLIST = "updateChatroomList"
+const DISPLAYALLCHATROOMS = "displayAllChatrooms"
+function ChatReducer(state = initialState, action) {
   switch (action.type) {
     case GETCHATROOMMESSAGES: {
       const newState = { ...action.payload };
@@ -34,3 +40,20 @@ export default function Reducer(state = initialState, action) {
       return state;
   }
 }
+function ChatroomListReducer(state = initalChatroomList, action) {
+  switch (action.type) {
+    case UPDATECHATROOMLIST: {
+      return {...state, chatroomList:[action.payload,...state.chatroomList]};
+    }
+    case DISPLAYALLCHATROOMS: {
+      return {...state, chatroomList:[...action.payload]}
+      }
+    default:
+      return state;
+  }
+}
+const Reducer = combineReducers({
+  ChatReducer,
+  ChatroomListReducer
+})
+export default Reducer;

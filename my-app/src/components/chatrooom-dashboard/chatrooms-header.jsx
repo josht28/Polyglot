@@ -1,33 +1,9 @@
 
-import { createChatRoom } from "../../ApiService";
-import { v4 as uuidv4 } from "uuid";
-export function ChatroomsHeader({setChatroomList}) {
-  const chatroomId = uuidv4();
-  const messageId = uuidv4();
+import{useNavigate} from 'react-router-dom'
+export function ChatroomsHeader() {
+  const navigate = useNavigate();
   const createChat = async function (e) {
-    console.log("click");
-    const data = {
-      chatroomId: chatroomId,
-      AI_id: "ChatGPTEnglish",
-      targetLanguage: "English",
-      AI_image: "AI Image",
-      AI_name: "William",
-      userId: "josh",
-      user_name: "Josh",
-      nativeLanguage: "French",
-      messages: [
-        {
-          messageId: messageId,
-          senderId: "ChatGPTFrench",
-          senderName: "William",
-          timeStamp: "Date.now()",
-          text: "Hello",
-          translatedText: "",
-        }
-      ],
-    };
-    let chatrooms = await createChatRoom(data);
-    setChatroomList((prevState)=>[...prevState,chatrooms]);
+    navigate('/');
   }
   return (
     <>
