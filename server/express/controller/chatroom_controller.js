@@ -9,7 +9,7 @@ const createChatroom = async function (req, res) {
       French: ["Marion", "Polyglot/Marion", "Bonjour"],
       Spanish: ["Paula", "Polyglot/Paula", "Hola"],
       German: ["Karl", "Polyglot/Karl", "Hallo"],
-      Portuguese: ["Louise", "Polyglot/Louise", "Olá"],
+      Portuguese: ["Rodrigo", "Polyglot/Rodrigo", "Olá"],
       Dutch: ["Kevin", "Polyglot/Kevin", "Halo"],
       Japanese: ["Hiro", "Polyglot/Hiro", "こんにちは"],
       Korean: ["Su-Ho", "Polyglot/Su-Ho", "안녕하세요"],
@@ -17,6 +17,7 @@ const createChatroom = async function (req, res) {
     };
     data.AI_name = AI[data.targetLanguage][0];
     data.AI_image = AI[data.targetLanguage][1];
+    data.messages[0].senderName = AI[data.targetLanguage][0];
     data.messages[0].text = AI[data.targetLanguage][2];
     console.log(data);
 

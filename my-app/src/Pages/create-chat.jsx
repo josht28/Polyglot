@@ -57,8 +57,10 @@ export function CreateChat() {
       };
       let chatrooms = await createChatRoom(data);
       console.log(chatrooms);
-      dispatch({ type: "updateChatroomList", payload: chatrooms });
-      navigate('/dashboard');
+      setTimeout(() => {
+        dispatch({ type: "updateChatroomList", payload: chatrooms });
+        navigate('/dashboard');
+      }, 500);
     }
   };
 

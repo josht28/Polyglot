@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMicrophoneLines } from "@fortawesome/free-solid-svg-icons/faMicrophoneLines";
 import { faCircleStop } from "@fortawesome/free-solid-svg-icons/faCircleStop";
-import { sendingRecord, saveMessage } from "../../ApiService";
+import { sendingRecord, saveMessage, AIresponse,getVoiceResponse } from "../../ApiService";
 import MicRecorder from "mic-recorder-to-mp3";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -43,7 +43,6 @@ export function VoiceRecording() {
     }
   };
   const stop = () => {
-    console.log("stopping");
     Mp3Recorder.stop()
       .getMp3()
       .then(async ([buffer, blob]) => {
@@ -59,62 +58,75 @@ export function VoiceRecording() {
         });
         const audio = await response.json();
         const audioFileLink = audio.url;
-        console.log(audioFileLink);
         // update the audio link
         setblobURL(audioFileLink);
-
-        // sending data to the backend to translate
-        const info = {
-          audio: audioFileLink,
-          chatroom: chatroom,
-        };
-        console.log(info);
-        const text = await sendingRecord(info);
-        // save to the database
+        const newId = uuidv4();
+        const newTimestamp = Date.now();
         const message = {
+          AI_id: chatroom.chatroomId,
+          AI_image: chatroom.AI_image,
+          AI_name: chatroom.AI_name,
+          userId: chatroom.userId,
+          nativeLanguage: chatroom.nativeLanguage,
           chatroomId: chatroom.chatroomId,
-          user_name: "Josh",
+          user_name: chatroom.user_name,
           targetLanguage: chatroom.targetLanguage,
           messages: {
-            messageId: uuidv4(),
+            messageId: newId,
             senderId: chatroom.userId,
             senderName: "Josh",
-            timeStamp: Date.now(),
-            text: text,
+            timeStamp: newTimestamp,
+            text: "",
             audio: audioFileLink,
             translatedText: "",
           },
         };
-        const updatedChatroom = await saveMessage(message);
         // update the message on the front end
-        dispatch({ type: "updatemessages", payload: updatedChatroom });
-
-        // // make a response call to ChatGPT and display the new message
-        // const ChatroomWithAIresponse = await AIresponse(chatroomDetail);
-
-        // // convert the text to audio through google cloud
-        // // take the last message from the chatroom
-        // lastMessage = ChatroomWithAIresponse.messages.slice(-1)
+        dispatch({ type: "updateVoiceMessage", payload: message.messages });
+        console.log("after front end update")
+        const updatedChat = { ...chatroom, messages: [...chatroom.messages, message.messages] }
 
         SetisRecording(false);
+
+        // sending data to the backend to extract text
+        const info = {
+          audio: audioFileLink,
+        };
+        const text = await sendingRecord(info);
+
+        // save to the database
+        message.messages.text = text;
+        await saveMessage(message);
+
+        // make a response call to ChatGPT
+        console.log("before sending to chatgpt")
+        console.log(updatedChat);
+        const ChatroomWithAIresponse = await AIresponse(updatedChat);
+
+        // convert the text to audio through google cloud
+        const updatedChatMessages = await getVoiceResponse(ChatroomWithAIresponse);
+        dispatch({ type:"updatemessages", payload: updatedChatMessages });
       })
       .catch((e) => console.log(e));
   };
 
   return (
     <>
-      <FontAwesomeIcon
-        className="speak"
-        icon={faMicrophoneLines}
-        onClick={start}
-        disable={isRecording}
-      />
-      <FontAwesomeIcon
-        icon={faCircleStop}
-        onClick={stop}
-        disable={!isRecording}
-      />
-      <audio src={blobURL} controls="controls" />
+      {isRecording ? (
+        <FontAwesomeIcon
+          className="stop_recording"
+          icon={faCircleStop}
+          onClick={stop}
+          disable={!isRecording}
+        />
+      ) : (
+        <FontAwesomeIcon
+          className="start_recording"
+          icon={faMicrophoneLines}
+          onClick={start}
+          disable={isRecording}
+        />
+      )}
     </>
   );
 }

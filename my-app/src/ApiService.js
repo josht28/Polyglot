@@ -76,3 +76,12 @@ export const sendingRecord = async function (message) {
   const data = await result.data;
   return data;
 }
+export const getVoiceResponse = async function (message) {
+const response = await fetch(`${URL}audioresponse`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(message),
+});
+const result = await response.json();
+  return result;
+}

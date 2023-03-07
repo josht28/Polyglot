@@ -12,5 +12,6 @@ router.post('/respond',controller.respond)
 router.post('/translate',controller.translateMessage)
 router.post('/grammar', controller.checkGrammar)
 router.post('/translategrammar', controller.translateGrammar)
-router.post('/audio', audio_controller.decodeAudio);
+router.post('/audio', audio_controller.decodeAudio)
+router.post('/audioresponse',audio_controller.generateAudioResponse)
 module.exports = router;

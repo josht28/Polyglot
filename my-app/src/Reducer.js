@@ -25,6 +25,7 @@ const initalChatroomList = {
 }
 const GETCHATROOMMESSAGES = "getChatRoomMessages";
 const UPDATEMESSAGES = "updatemessages";
+const UPDATEVOICEMESSAGE = "updateVoiceMessage";
 const UPDATECHATROOMLIST = "updateChatroomList"
 const DISPLAYALLCHATROOMS = "displayAllChatrooms"
 function ChatReducer(state = initialState, action) {
@@ -37,6 +38,10 @@ function ChatReducer(state = initialState, action) {
       const newState = {...action.payload };
       return newState;
     }
+    case UPDATEVOICEMESSAGE: {
+      const messages = [...state.messages, action.payload];
+      return { ...state, messages: [...messages]};
+      }
     default:
       return state;
   }

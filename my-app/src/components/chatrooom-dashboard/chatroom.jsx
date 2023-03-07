@@ -5,9 +5,8 @@ import {Image} from 'cloudinary-react'
 export function Chatroom({ chatroom}) {
   const dispatch = useDispatch();
   const AI_image = chatroom.AI_image
-
   const chatroomId = chatroom.chatroomId;
-  const lastReceivedMessage = chatroom.messages.slice(-1)[0].text;
+  const lastReceivedMessage = (chatroom.messages.slice(-1)[0].text).slice(0,50)+"...";
   const lastReceivedMessageTimeStamp = chatroom.messages.slice(-1)[0].timeStamp;
   const prettyTimestamp = moment(new Date(+lastReceivedMessageTimeStamp)).format(
     "LT"

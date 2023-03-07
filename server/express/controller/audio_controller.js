@@ -1,10 +1,11 @@
 const textToSpeech = require("@google-cloud/text-to-speech");
 const fetch = require("cross-fetch");
-const chatroom = require("../model/chatroom");
+const database = require("../model/chatroom");
 require("dotenv").config();
 const fs = require("fs");
 const path = require("path");
 const util = require("util");
+
 const { v4: uuidv4 } = require("uuid");
 // cloudinary connection
 const cloudinary = require("cloudinary").v2;
@@ -22,19 +23,18 @@ const decodeAudio = async function (req, res) {
   try {
     console.log(req.body);
     const audioFileLink = req.body.audio;
-    const chatroom = req.body.chatroom;
     // make an API call to python server with the audio to get the text extracted
     const PYTHONURL = "http://127.0.0.1:5000/audio";
     const data = { body: audioFileLink };
-    const whisperResponse =await fetch(PYTHONURL, {
+    const whisperResponse = await fetch(PYTHONURL, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
       },
       credential: "include",
-    })
-    const whisperResult = await whisperResponse.json()
+    });
+    const whisperResult = await whisperResponse.json();
     const text = await whisperResult.data;
     console.log(text);
     res.status(200);
@@ -42,10 +42,55 @@ const decodeAudio = async function (req, res) {
   } catch (error) {
     console.log(error);
   }
-  const generateAudioResponse = async function (req, res) {
-    // make an api call to open ai to generate the text response
+};
+const generateAudioResponse = async function (req, res) {
+  try {
+    const chatroom = req.body;
+    // slice the last sent message
+    const lastMessage = req.body.messages.slice(-1)[0];
+    const text = lastMessage.text;
 
     // convert the generated response through google cloud
+    const voiceData = {
+      English: {
+        languageCode: "en-US",
+        name: "en-US-Wavenet-J",
+      },
+      French: {
+        languageCode: "fr-FR",
+        name: "fr-FR-Wavenet-C",
+      },
+      Spanish: {
+        languageCode: "es-US",
+        name: "es-US-Wavenet-A",
+      },
+      German: {
+        languageCode: "de-DE",
+        name: "de-DE-Wavenet-B",
+      },
+      Portuguese: {
+        languageCode: "pt-PT",
+        name: "pt-PT-Wavenet-C",
+      },
+      Dutch: {
+        languageCode: "nl-NL",
+        name: "nl-NL-Wavenet-B",
+      },
+      Japanese: {
+        languageCode: "ja-JP",
+        name: "ja-JP-Wavenet-C",
+      },
+      Korean: {
+        languageCode: "ko-KR",
+        name: "ko-KR-Wavenet-A",
+      },
+      Chinese: {
+        languageCode: "cmn-TW",
+        name: "cmn-TW-Wavenet-A",
+      },
+    };
+    const languageCode = voiceData[chatroom.targetLanguage].languageCode
+    const name = voiceData[chatroom.targetLanguage].name;
     const client = new textToSpeech.TextToSpeechClient();
     const request = {
       audioConfig: {
@@ -57,11 +102,13 @@ const decodeAudio = async function (req, res) {
         text: text,
       },
       voice: {
-        languageCode: "en-US",
-        name: "en-US-Wavenet-J",
+        languageCode: `${languageCode}`,
+        name:`${name}`,
       },
     };
+    console.log(request);
     const [response] = await client.synthesizeSpeech(request);
+    // create an mp3 file from the response
     const writeFile = util.promisify(fs.writeFile);
     await writeFile(
       path.join(__dirname, "output.mp3"),
@@ -70,16 +117,44 @@ const decodeAudio = async function (req, res) {
     );
     console.log(`Audio content has been made`);
     console.log("uploading to cloudinary");
-    // using cloudinary sdk
-    cloudinary.uploader
-      .unsigned_upload(path.join(__dirname, "/output.mp3"), "AIresponse", {
+    // using cloudinary sdk upload the audio and get the url
+    const googleResponse = await cloudinary.uploader.unsigned_upload(
+      path.join(__dirname, "/output.mp3"),
+      "AIresponse",
+      {
         cloud_name: "dayg41e9c",
         resource_type: "video",
-      })
-      .then((res) => console.log(res))
-      .catch((error) => {
-        console.log(error);
-      });
+      }
+    );
+    const audio = googleResponse.url;
+    console.log(`googleResponseData: ${googleResponse}`);
+    console.log(`audio:${audio}`);
+
+    //delete the generated audio file
+    fs.unlink(path.join(__dirname, "/output.mp3"), (err) => {
+      if (err) throw err;
+      console.log("output file was deleted");
+    });
+
+    // update the message with audio and save to database
+    console.log(`updated message: ${lastMessage}`);
+
+    // find the the chatroom to which the message belongs to
+    let chats = await database.find({ chatroomId: chatroom.chatroomId });
+
+    //loop and find the chat using the message id and update the audio
+    chats[0].messages.forEach((message) => {
+      if (message.messageId === lastMessage.messageId) message.audio = audio;
+    });
+    // save the entire chatroom to the database
+    await chats[0].save();
+    // send the updated chatroom back to the frontendto render
+    console.log(chats[0]);
+    res.status(200);
+    res.send(chats[0]);
+  } catch (error) {
+    console.log(error);
   }
 };
-module.exports = { decodeAudio };
+
+module.exports = { decodeAudio, generateAudioResponse };
