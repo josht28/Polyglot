@@ -316,3 +316,10 @@ animation: Ease_in 0.75s ease 0s 1 normal none;
   height: 50px;
   border-radius: 50%;
 }
+.right_message_audio {
+  padding: 15px 10px 0px 0px;
+}
+.message_audio{
+width:190px;
+height: 40px;
+}

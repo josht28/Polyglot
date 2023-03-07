@@ -15,6 +15,7 @@ const initialState = {
       senderName: "",
       timeStamp: "",
       text: "",
+      audio:"",
       translatedText: "",
     },
   ],

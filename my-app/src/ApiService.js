@@ -20,7 +20,7 @@ export const createChatRoom = async function (data) {
   return chatroom;
 };
 export const saveMessage = async function (data) {
-  const response = await fetch(`${URL}message`, {
+  const response = await fetch(`${URL}savemessage`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),

@@ -37,6 +37,7 @@ export function ChatDisplayFooter() {
           senderName: "Josh",
           timeStamp: Date.now(),
           text: Txt,
+          audio:"",
           translatedText: "",
         },
       };

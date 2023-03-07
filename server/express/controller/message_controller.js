@@ -72,7 +72,6 @@ const respond = async function (req, res) {
   let user_name = req.body.user_name;
   let targetLanguage = req.body.targetLanguage;
   let chatroomId = req.body.chatroomId;
-
   // take the last three conversation to give context to the API
   let previousMessages = req.body.messages;
   let context;
@@ -102,6 +101,7 @@ const respond = async function (req, res) {
       senderName: AI_name,
       timeStamp: Date.now(),
       text: text,
+      audio:"",
       translatedText: "",
     };
     let savedMessage = await chatroom.findOneAndUpdate(
@@ -170,17 +170,18 @@ const checkGrammar = async function (req, res) {
   const text = req.body.text;
   let prompt = `you are a teacher,check grammatical mistake of "${text}",repsond in ${targetLanguage}.`;
   try {
-    const response = await openai.createCompletion({
-      model: "text-davinci-003",
-      prompt: prompt,
-      temperature: 1,
-      max_tokens: 200,
-      top_p: 1,
-      frequency_penalty: 0,
-      presence_penalty: 0.26,
-    });
-    const result = response.data.choices[0].text;
+    // const response = await openai.createCompletion({
+    //   model: "text-davinci-003",
+    //   prompt: prompt,
+    //   temperature: 1,
+    //   max_tokens: 200,
+    //   top_p: 1,
+    //   frequency_penalty: 0,
+    //   presence_penalty: 0.26,
+    // });
+    // const result = response.data.choices[0].text;
     res.status(200);
+    let result= "testing";
     res.send({ data: result });
   } catch (error) {
     res.status(500);

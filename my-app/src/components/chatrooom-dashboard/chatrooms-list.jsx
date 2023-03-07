@@ -6,6 +6,7 @@ import { useDispatch,useSelector } from "react-redux";
 export function ChatroomsList() {
   const dispatch = useDispatch();
   const chatroomList = useSelector((state) => state.ChatroomListReducer.chatroomList);
+  console.log(chatroomList);
   useEffect(() => {
     // get all the chatrooms on initiation
     (async () => {

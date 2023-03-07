@@ -14,8 +14,8 @@ export function MessageTo({ message }) {
   // State to check if the translation already was made
   const [TranslationExists, SetTranslationExists] = useState(false);
 
-  const targetLanguage = useSelector((state) => state.targetLanguage);
-  const nativeLanguage = useSelector((state) => state.nativeLanguage);
+  const targetLanguage = useSelector((state) => state.ChatReducer.targetLanguage);
+  const nativeLanguage = useSelector((state) => state.ChatReducer.nativeLanguage);
   const amICorrect = async function () {
 
     // if the response was already generated serve that to the user else make an API call
@@ -54,22 +54,50 @@ export function MessageTo({ message }) {
       <div className="message_container ">
         <div className="message_to">
           <div className="right_message">
-            <div className="right_message_layout">
-              <div className="right_message_text message_text">
-                {message.text}
+            {message.audio === "" ? (
+              <div className="right_message_layout">
+                <div className="right_message_text message_text">
+                  {message.text}
+                </div>
+                {RevealGrammar ? (
+                  <>
+                    {TranslationExists ? (
+                      <div className="grammar_response">
+                        {GrammarTranslation}
+                      </div>
+                    ) : (
+                      <div className="grammar_response">{GrammarResponse}</div>
+                    )}{" "}
+                  </>
+                ) : (
+                  ""
+                )}
               </div>
-              {RevealGrammar ? (
-                <>
-                  {TranslationExists ? (
-                    <div className="grammar_response">{GrammarTranslation}</div>
-                  ) : (
-                    <div className="grammar_response">{GrammarResponse}</div>
-                  )}{" "}
-                </>
-              ) : (
-                ""
-              )}
-            </div>
+            ) : (
+              <div className="right_message_layout">
+                <div className="right_message_audio ">
+                  <audio
+                    className="message_audio"
+                    src={message.audio}
+                    controls="controls"
+                  />
+                </div>
+                {RevealGrammar ? (
+                  <>
+                    {TranslationExists ? (
+                      <div className="grammar_response">
+                        {GrammarTranslation}
+                      </div>
+                    ) : (
+                      <div className="grammar_response">{GrammarResponse}</div>
+                    )}{" "}
+                  </>
+                ) : (
+                  ""
+                )}
+              </div>
+            )}
+
             <div className="message_timeStamp">{prettyTimestamp}</div>
             <div>
               {RevealGrammar ? (

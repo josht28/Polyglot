@@ -4,15 +4,6 @@ const createChatroom = async function (req, res) {
 
   try {
      let data = req.body;
-    // getting cloudinary images
-    // const { resources } = await cloudinary.search
-    //   .expression("folder:Polyglot")
-    //   .sort_by("public_id", "desc")
-    //   .max_results(30)
-    //   .execute();
-    // const publicIds = resources.map((file) => file.public_id);
-
-    // map the AI name and image
     const AI = {
       English: ["William", "Polyglot/William", `Hey`],
       French: ["Marion", "Polyglot/Marion", "Bonjour"],

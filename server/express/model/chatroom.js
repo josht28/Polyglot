@@ -16,6 +16,7 @@ const chatroomSchema = new Schema({
       senderName: String,
       timeStamp: String,
       text: String,
+      audio:String,
       translatedText: String,
     },
   ],

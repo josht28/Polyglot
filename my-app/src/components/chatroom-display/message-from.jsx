@@ -2,15 +2,18 @@ import moment from "moment";
 import { useSelector,useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { translateText } from "../../ApiService";
-import {Image} from 'cloudinary-react'
+import { Image } from 'cloudinary-react'
+
+
 export function Messagefrom({ message, AI_image }) {
   const prettyTimestamp = moment(new Date(+message.timeStamp)).format("LT");
   // creating states to see if translate was requested
   const [ShowTranslation, setShowTranslation] = useState(false);
-  const targetLanguage = useSelector((store) => store.targetLanguage);
-  const nativeLanguage = useSelector((store) => store.nativeLanguage);
-  const chatroomId = useSelector((store) => store.chatroomId);
+  const targetLanguage = useSelector((store) => store.ChatReducer.targetLanguage);
+  const nativeLanguage = useSelector((store) => store.ChatReducer.nativeLanguage);
+  const chatroomId = useSelector((store) => store.ChatReducer.chatroomId);
   const dispatch = useDispatch();
+  const audio = message.audio;
 
   const translateMessage = async function (e) {
     // check if translation already exists
@@ -32,51 +35,72 @@ export function Messagefrom({ message, AI_image }) {
   };
   return (
     <>
-      <div className="message_container">
-        <div className="message_from">
-          <div className="left_message_user">
-            <Image
-              cloudName="dayg41e9c"
-              publicId={AI_image}
-              width="40"
-              height="40"
-              radius="max"
-            />
-          </div>
-          <div className="left_message">
-            {!ShowTranslation ? (
-              <div className="left_message_text message_text">
-                {message.text}
-              </div>
-            ) : (
-              <div className="left_message_text translated_text">
-                {message.translatedText}
-              </div>
-            )}
-
-            <div>
-              {ShowTranslation ? (
-                <a
-                  href="#"
-                  className="message_translate"
-                  onClick={translateMessage}
-                >
-                  Show original
-                </a>
-              ) : (
-                <a
-                  href="#"
-                  className="message_translate"
-                  onClick={translateMessage}
-                >
-                  Translate
-                </a>
-              )}
+      {audio === "" ? (
+        <div className="message_container">
+          <div className="message_from">
+            <div className="left_message_user">
+              <Image
+                cloudName="dayg41e9c"
+                publicId={AI_image}
+                width="40"
+                height="40"
+                radius="max"
+              />
             </div>
-            <div className="message_timeStamp"> {prettyTimestamp}</div>
+            <div className="left_message">
+              {!ShowTranslation ? (
+                <div className="left_message_text message_text">
+                  {message.text}
+                </div>
+              ) : (
+                <div className="left_message_text translated_text">
+                  {message.translatedText}
+                </div>
+              )}
+
+              <div>
+                {ShowTranslation ? (
+                  <a
+                    href="#"
+                    className="message_translate"
+                    onClick={translateMessage}
+                  >
+                    Show original
+                  </a>
+                ) : (
+                  <a
+                    href="#"
+                    className="message_translate"
+                    onClick={translateMessage}
+                  >
+                    Translate
+                  </a>
+                )}
+              </div>
+              <div className="message_timeStamp"> {prettyTimestamp}</div>
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="message_container">
+          <div className="message_from">
+            <div className="left_message_user">
+              <Image
+                cloudName="dayg41e9c"
+                publicId={AI_image}
+                width="40"
+                height="40"
+                radius="max"
+              />
+            </div>
+            <div className="left_message">
+              <audio src={audio} controls="controls" />
+              <div></div>
+              <div className="message_timeStamp"> {prettyTimestamp}</div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

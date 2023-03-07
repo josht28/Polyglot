@@ -3,7 +3,6 @@ import requests
 import whisper
 import os
 from flask_cors import CORS
-from io import BytesIO
 
 # Set your Cloudinary credentials
 # ==============================
@@ -18,42 +17,24 @@ cloudinary.config (
   api_secret = os.getenv('CLOUDINARY_API_SECRET'),
   secure = True,
   )
-# Import the Cloudinary libraries
-# ==============================
-
-import cloudinary.uploader
-import cloudinary.api
-
-# Import to format the JSON responses
-# ==============================
-import json
-
 # Init app
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 @app.route('/audio',methods =['POST'])
 def parse():
-    print ("reached here")
+  #fetching the cloudinary url of the audio
     url = request.json['body']
-    print(url)
     audio = requests.get(url)
+  # create an mp3 file from the response
     with open('movie.mp3', 'wb') as f:
      f.write(audio.content)
+  # pass this mp3 file to the whisper model to transcribe the text from the speech
      model = whisper.load_model("base")
      result = model.transcribe('./movie.mp3')
-     print(result["text"])
+  # delete the mp3 file from the directory
      os.remove('./movie.mp3')
      return jsonify({'data':result["text"]})
-
-
-    # return jsonify({'data':url})
-
-
-
-@app.route('/',methods =['GET'])
-def Home():
-    return jsonify({'message':'Testing'})
 
 #Run server
 if __name__ == '__main__':

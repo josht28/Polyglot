@@ -50,6 +50,7 @@ export function CreateChat() {
             senderName: "",
             timeStamp: Date.now(),
             text: "",
+            audio:"",
             translatedText: "",
           },
         ],
