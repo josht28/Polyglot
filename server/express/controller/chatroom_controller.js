@@ -19,10 +19,7 @@ const createChatroom = async function (req, res) {
     data.AI_image = AI[data.targetLanguage][1];
     data.messages[0].senderName = AI[data.targetLanguage][0];
     data.messages[0].text = AI[data.targetLanguage][2];
-    console.log(data);
-
     let result = await chatroom.create(data);
-
     res.status(201);
     res.send(result);
   } catch (error) {
@@ -32,8 +29,6 @@ const createChatroom = async function (req, res) {
 };
 const getAllChatrooms = async function (req, res) {
   try {
-
-
     const chatrooms = await chatroom.find({});
     res.status(200);
     res.send(chatrooms);

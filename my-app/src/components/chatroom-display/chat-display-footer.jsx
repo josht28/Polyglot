@@ -10,6 +10,7 @@ import { VoiceRecording } from "./voice-recording";
 export function ChatDisplayFooter() {
   const chatroom = useSelector((state) => state.ChatReducer);
   const dispatch = useDispatch();
+
   // state to handle the text input field
   const [Text, SetText] = useState("");
   const changeTxt = function (event) {
@@ -53,10 +54,14 @@ export function ChatDisplayFooter() {
       dispatch({ type: "updatemessages", payload: chatroomDetail });
 
       // make a response call to ChatGPT and display the new message after a delay for better UX
-      const delayTime = Math.floor(Math.random() *(4000-2000)+2000 );
+      const delayTime = Math.floor(Math.random() * (4000 - 2000) + 2000);
+      setTimeout(() => {
+        dispatch({ type: "istyping", payload: true });
+      }, 1000);
       setTimeout(async () => {
         const response = await AIresponse(chatroomDetail);
         dispatch({ type: "updatemessages", payload: response });
+        dispatch({ type: "istyping", payload: false });
       }, delayTime);
     }
   };

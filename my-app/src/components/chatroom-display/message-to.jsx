@@ -20,7 +20,6 @@ export function MessageTo({ message }) {
 
     // if the response was already generated serve that to the user else make an API call
     if (GrammarResponse === "") {
-      console.log("clicked");
       message.targetLanguage = targetLanguage;
       let response = await checkGrammar(message);
       // save this response and serve to the user
@@ -37,16 +36,12 @@ export function MessageTo({ message }) {
         nativeLanguage: nativeLanguage,
         text:GrammarResponse
       }
-      console.log(data);
       let translatedText = await translateGrammar(data);
-      console.log(translatedText);
       SetGrammarTranslation(translatedText)
       SetTranslationExists(!TranslationExists);
-      console.log(TranslationExists);
     }
     else {
       SetTranslationExists(!TranslationExists);
-      console.log(TranslationExists);
     }
   };
   return (

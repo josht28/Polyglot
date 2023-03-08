@@ -21,7 +21,6 @@ const openai = new OpenAIApi(configuration);
 
 const decodeAudio = async function (req, res) {
   try {
-    console.log(req.body);
     const audioFileLink = req.body.audio;
     // make an API call to python server with the audio to get the text extracted
     const PYTHONURL = "http://127.0.0.1:5000/audio";
@@ -36,7 +35,6 @@ const decodeAudio = async function (req, res) {
     });
     const whisperResult = await whisperResponse.json();
     const text = await whisperResult.data;
-    console.log(text);
     res.status(200);
     res.send({ data: text });
   } catch (error) {
@@ -106,7 +104,6 @@ const generateAudioResponse = async function (req, res) {
         name:`${name}`,
       },
     };
-    console.log(request);
     const [response] = await client.synthesizeSpeech(request);
     // create an mp3 file from the response
     const writeFile = util.promisify(fs.writeFile);
@@ -115,8 +112,6 @@ const generateAudioResponse = async function (req, res) {
       response.audioContent,
       "binary"
     );
-    console.log(`Audio content has been made`);
-    console.log("uploading to cloudinary");
     // using cloudinary sdk upload the audio and get the url
     const googleResponse = await cloudinary.uploader.unsigned_upload(
       path.join(__dirname, "/output.mp3"),
@@ -127,18 +122,13 @@ const generateAudioResponse = async function (req, res) {
       }
     );
     const audio = googleResponse.url;
-    console.log(`googleResponseData: ${googleResponse}`);
-    console.log(`audio:${audio}`);
 
     //delete the generated audio file
     fs.unlink(path.join(__dirname, "/output.mp3"), (err) => {
       if (err) throw err;
-      console.log("output file was deleted");
     });
 
     // update the message with audio and save to database
-    console.log(`updated message: ${lastMessage}`);
-
     // find the the chatroom to which the message belongs to
     let chats = await database.find({ chatroomId: chatroom.chatroomId });
 
@@ -149,7 +139,6 @@ const generateAudioResponse = async function (req, res) {
     // save the entire chatroom to the database
     await chats[0].save();
     // send the updated chatroom back to the frontendto render
-    console.log(chats[0]);
     res.status(200);
     res.send(chats[0]);
   } catch (error) {

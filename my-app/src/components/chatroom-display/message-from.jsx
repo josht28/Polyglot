@@ -21,10 +21,8 @@ export function Messagefrom({ message, AI_image }) {
   const translateMessage = async function (e) {
     // check if translation already exists
     if (message.translatedText !== "") {
-      console.log("serving from memory");
       setShowTranslation(!ShowTranslation);
     } else {
-      console.log("api call");
       message.targetLanguage = targetLanguage;
       message.nativeLanguage = nativeLanguage;
       message.chatroomId = chatroomId;

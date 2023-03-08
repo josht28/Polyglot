@@ -28,6 +28,7 @@ const UPDATEMESSAGES = "updatemessages";
 const UPDATEVOICEMESSAGE = "updateVoiceMessage";
 const UPDATECHATROOMLIST = "updateChatroomList"
 const DISPLAYALLCHATROOMS = "displayAllChatrooms"
+const ISTYPING = "istyping"
 function ChatReducer(state = initialState, action) {
   switch (action.type) {
     case GETCHATROOMMESSAGES: {
@@ -58,8 +59,18 @@ function ChatroomListReducer(state = initalChatroomList, action) {
       return state;
   }
 }
+function TypingReducer(state = false, action) {
+  switch (action.type) {
+    case ISTYPING: {
+      return action.payload
+    }
+    default:
+      return state;
+  }
+}
 const Reducer = combineReducers({
   ChatReducer,
-  ChatroomListReducer
+  ChatroomListReducer,
+  TypingReducer
 })
 export default Reducer;

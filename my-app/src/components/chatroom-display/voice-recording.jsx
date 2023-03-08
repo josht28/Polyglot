@@ -83,7 +83,6 @@ export function VoiceRecording() {
         };
         // update the message on the front end
         dispatch({ type: "updateVoiceMessage", payload: message.messages });
-        console.log("after front end update")
         const updatedChat = { ...chatroom, messages: [...chatroom.messages, message.messages] }
 
         SetisRecording(false);
@@ -93,18 +92,17 @@ export function VoiceRecording() {
           audio: audioFileLink,
         };
         const text = await sendingRecord(info);
-
+        dispatch({ type: "istyping", payload: true });
         // save to the database
         message.messages.text = text;
         await saveMessage(message);
 
         // make a response call to ChatGPT
-        console.log("before sending to chatgpt")
-        console.log(updatedChat);
-        const ChatroomWithAIresponse = await AIresponse(updatedChat);
+      const ChatroomWithAIresponse = await AIresponse(updatedChat);
 
         // convert the text to audio through google cloud
         const updatedChatMessages = await getVoiceResponse(ChatroomWithAIresponse);
+                dispatch({ type: "istyping", payload: false });
         dispatch({ type:"updatemessages", payload: updatedChatMessages });
       })
       .catch((e) => console.log(e));

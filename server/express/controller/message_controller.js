@@ -74,7 +74,6 @@ const respond = async function (req, res) {
   let chatroomId = req.body.chatroomId;
   // take the last three conversation to give context to the API
   let previousMessages = req.body.messages;
-  console.log(previousMessages);
   let context;
   let prompt = "";
   if (previousMessages.length >= 3) {
@@ -85,17 +84,16 @@ const respond = async function (req, res) {
     prompt = `${AI_name} is gen-z, and a close friend of ${user_name}. respond in ${targetLanguage}\n${context[0].senderName}: ${context[0].text} \n${context[1].senderName}: ${context[1].text}\n${AI_name}:`;
   }
   try {
-    // const response = await openai.createCompletion({
-    //   model: "text-davinci-003",
-    //   prompt: prompt,
-    //   temperature: 1,
-    //   max_tokens: 200,
-    //   top_p: 1,
-    //   frequency_penalty: 0,
-    //   presence_penalty: 0.26,
-    // });
-    // const text = response.data.choices[0].text;
-    const text = "testing";
+    const response = await openai.createCompletion({
+      model: "text-davinci-003",
+      prompt: prompt,
+      temperature: 1,
+      max_tokens: 200,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0.26,
+    });
+    const text = response.data.choices[0].text;
     let messageId = uuidv4();
     let newTimeStamp = Date.now();
     const data = {
@@ -123,14 +121,12 @@ const respond = async function (req, res) {
 };
 
 const translateMessage = async function (req, res) {
-  console.log("reached here")
   // data for mapping language for API call
   const data = req.body;
   const chatroomId = data.chatroomId;
   const messageId = data.messageId;
   const nativeLanguage = translateData[data.nativeLanguage];
   const text = data.text;
-  console.log(`${text},null,${nativeLanguage}`);
   try {
     // make API call to deepL to translate. second argument is null as it will detect the source language
     const translationResult = await translator.translateText(
@@ -138,7 +134,6 @@ const translateMessage = async function (req, res) {
       null,
       nativeLanguage
     );
-    console.log(`translationresult:${translationResult.text}`);
     // find the the chatroom to which the message belongs to
     let chats = await chatroom.find({ chatroomId: chatroomId });
 
@@ -161,7 +156,6 @@ const translateGrammar = async function (req, res) {
   try {
    const text = req.body.text
     let nativeLanguage = translateData[req.body.nativeLanguage];
-     console.log(`${text},null,${nativeLanguage}`);
     const translationResult = await translator.translateText(text, null, nativeLanguage);
     res.status(200);
     res.send({ data: translationResult.text });

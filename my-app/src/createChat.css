@@ -1,58 +1,89 @@
-.createChatbackground{
-  background: linear-gradient(0deg, rgba(255,255,255,1) 34%, rgba(254,239,239,1) 54%, rgba(254,234,234,1) 75%, rgba(255,244,244,1) 100%);
+.createChatbackground {
+  background: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 1) 34%,
+    rgba(254, 239, 239, 1) 54%,
+    rgba(254, 234, 234, 1) 75%,
+    rgba(255, 244, 244, 1) 100%
+  );
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  height:100svh;
-
+  height: 100svh;
+}
+.create_chat_question:hover {
+  cursor: pointer;
 }
 .create_chat_form_background {
   background-color: white;
-  margin-top:100px;
-  height: 50%;
-  width:400px;
+  width: 400px;
+  height: 60%;
 }
 .createChatPage {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.input{
-  margin:20px;
+.input {
+  margin: 20px;
 }
-.Hero{
+.Hero {
   font-size: 2.1rem;
-  padding:0px 20px;
+  padding: 0px 20px;
 }
-.Logo{
-  padding-top: 100px;
-}
-.createChatButton{
-  border: none;
-  padding:20px;
-  width:90%;
-  color : white;
-  background:linear-gradient(135deg, rgba(169,208,250,1) 0%, rgba(60,149,244,1) -15%, rgba(51,144,243,1) 58%, rgba(42,139,242,1) 83%, rgba(42,139,242,1) 100%);;
-  border-radius: 5px;
-}
-.createChatButton-wrapper{
-
+.logo_wrapper {
   display: flex;
   justify-content: center;
 }
-form{
+.create_chat_wrapper {
+  position: relative;
+  height: 100svh;
+}
+.Logo {
+  padding-top: 10px;
+  width: 300px;
+  height: 300px;
+  z-index: 1;
+}
+.createChatButton {
+  border: none;
+  padding: 20px;
+  width: 90%;
+  color: white;
+  background: linear-gradient(
+    135deg,
+    rgba(169, 208, 250, 1) 0%,
+    rgba(60, 149, 244, 1) -15%,
+    rgba(51, 144, 243, 1) 58%,
+    rgba(42, 139, 242, 1) 83%,
+    rgba(42, 139, 242, 1) 100%
+  );
+  border-radius: 5px;
+  transition: all 1.5s ease;
+}
+.createChatButton:hover {
+  scale: 1.03;
+  cursor: pointer;
+}
+.createChatButton-wrapper {
+  display: flex;
+  justify-content: center;
+}
+form {
   position: relative;
   padding-top: 20px;
+  height: 100%;
 }
-.spacing{
-  margin-top:40px;
+.spacing {
+  margin-top: 70px;
 }
-.closeTab{
+.closeTab {
   position: absolute;
-  top:15px;
-  right:15px;
+  top: 15px;
+  right: 15px;
 }
-.closeTab:hover{
+.closeTab:hover {
   scale: 1.2;
+  cursor: pointer;
 }
