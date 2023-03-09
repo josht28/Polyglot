@@ -86,8 +86,12 @@ const generateAudioResponse = async function (req, res) {
         languageCode: "cmn-TW",
         name: "cmn-TW-Wavenet-A",
       },
+      Italian: {
+        languageCode: "it-IT",
+        name: "it-IT-Wavenet-D",
+      },
     };
-    const languageCode = voiceData[chatroom.targetLanguage].languageCode
+    const languageCode = voiceData[chatroom.targetLanguage].languageCode;
     const name = voiceData[chatroom.targetLanguage].name;
     const client = new textToSpeech.TextToSpeechClient();
     const request = {
@@ -101,7 +105,7 @@ const generateAudioResponse = async function (req, res) {
       },
       voice: {
         languageCode: `${languageCode}`,
-        name:`${name}`,
+        name: `${name}`,
       },
     };
     const [response] = await client.synthesizeSpeech(request);

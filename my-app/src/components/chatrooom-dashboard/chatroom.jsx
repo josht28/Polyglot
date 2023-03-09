@@ -1,23 +1,25 @@
 import { getChatroomMessages } from "../../ApiService";
 import { useDispatch } from "react-redux";
 import moment from "moment";
-import {Image} from 'cloudinary-react'
-export function Chatroom({ chatroom}) {
+import { Image } from "cloudinary-react";
+export function Chatroom({ chatroom }) {
   const dispatch = useDispatch();
-  const AI_image = chatroom.AI_image
+  const AI_image = chatroom.AI_image;
   const chatroomId = chatroom.chatroomId;
-  const lastReceivedMessage = (chatroom.messages.slice(-1)[0].text).slice(0,50)+"...";
+  // For the display of last message on the chatroom list
+  const lastReceivedMessage =
+    chatroom.messages.slice(-1)[0].text.slice(0, 50) + "...";
   const lastReceivedMessageTimeStamp = chatroom.messages.slice(-1)[0].timeStamp;
-  const prettyTimestamp = moment(new Date(+lastReceivedMessageTimeStamp)).format(
-    "LT"
-  );
+  
+  const prettyTimestamp = moment(
+    new Date(+lastReceivedMessageTimeStamp)
+  ).format("LT");
   const retrieveChatMessages = async function (e) {
-     // get the whole chatroom messages
+    // get the whole chatroom messages
     const chatroom = await getChatroomMessages(chatroomId);
 
- // update the global state with the selected chatroom details
-     dispatch({ type: "getChatRoomMessages",payload:chatroom[0]});
-
+    // update the global state with the selected chatroom details
+    dispatch({ type: "getChatRoomMessages", payload: chatroom[0] });
   };
 
   return (

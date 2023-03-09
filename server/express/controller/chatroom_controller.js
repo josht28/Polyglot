@@ -13,7 +13,8 @@ const createChatroom = async function (req, res) {
       Dutch: ["Kevin", "Polyglot/Kevin", "Halo"],
       Japanese: ["Hiro", "Polyglot/Hiro", "こんにちは"],
       Korean: ["Su-Ho", "Polyglot/Su-Ho", "안녕하세요"],
-      Chinese: ["Hua", "Polyglot/Hua",'你好']
+      Chinese: ["Hua", "Polyglot/Hua", '你好'],
+      Italian: ["Marco", "Polyglot/William",'Buon giorno']
     };
     data.AI_name = AI[data.targetLanguage][0];
     data.AI_image = AI[data.targetLanguage][1];
