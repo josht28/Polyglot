@@ -27,23 +27,7 @@ Run npm i from the express folder and run nodemon. This will start the server on
 # React front end
 Go in to the my-app section, run npm i and followed by npm start.This should open up the browser on localhost:3000.
 
-# local variables
-python :
-OUDINARY_NAME =
-CLOUDINARY_API_KEY =
-CLOUDINARY_API_SECRET =
 
-express :
-chatGPT_key=
-deepLAuthKey =
-CLOUDINARY_NAME =
-CLOUDINARY_API_KEY =
-CLOUDINARY_API_SECRET =
-GOOGLE_APPLICATION_CREDENTIALS =
-CLOUDINARY_URL=cloudinary://<your cloudnary api>:<>your cloudinary api secret@<your cloudinary name>
-
-#Additional notes:
-Please note the proflie pics and audio are being served from the cloudinary account and hence need to be upplaoded in a folder named Polyglot
 
 
 
