@@ -23,7 +23,7 @@ const decodeAudio = async function (req, res) {
   try {
     const audioFileLink = req.body.audio;
     // make an API call to python server with the audio to get the text extracted
-    const PYTHONURL = "http://127.0.0.1:5000/audio";
+    const PYTHONURL = process.env.PYTHON_URL;
     const data = { body: audioFileLink };
     const whisperResponse = await fetch(PYTHONURL, {
       method: "POST",

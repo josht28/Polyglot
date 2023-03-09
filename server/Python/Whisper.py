@@ -25,6 +25,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 def parse():
   #fetching the cloudinary url of the audio
     url = request.json['body']
+    print(url)
     audio = requests.get(url)
   # create an mp3 file from the response
     with open('movie.mp3', 'wb') as f:
