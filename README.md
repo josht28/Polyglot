@@ -6,6 +6,7 @@ Polyglot is an educational app to help intermediate language learners to practis
 
 Install Python 3.8-3.10 and pip for package management
 
+
 brew install ffmpeg
 
 pip install pipenv
@@ -28,6 +29,7 @@ pip install cloudinary
 
 To start the server:
 Activate the virtual environment with the command: run the file whisper.py using the command: python Whisper.py . This will start the server and be listening on local host port 5000.
+
 
 # Express server
 Run npm i from the express folder and run nodemon. This will start the server on localhost:4000.
@@ -91,4 +93,3 @@ CLOUDINARY_API_SECRET='./google-service-account.json'
 GOOGLE_APPLICATION_CREDENTIALS= 
 
 CLOUDINARY_URL=
-

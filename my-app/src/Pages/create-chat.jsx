@@ -19,6 +19,7 @@ export function CreateChat() {
     { value: "Japanese", label: "Japanese" },
     { value: "Korean", label: "Korean" },
     { value: "Chinese", label: "Chinese" },
+    { value: "Italian", label: "Italian" },
   ];
   const navigate = useNavigate();
   const dispatch = useDispatch();
