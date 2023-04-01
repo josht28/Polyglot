@@ -1,5 +1,5 @@
 <div align="center">
-  <img src ='./client/src/pics/polyglot-logos/polyglot-logos_white.png' alt="Logo" width="200" height="200">
+  <img src ='./client/src/pics/polyglot-logos/polyglot-logos_transparent.png' alt="Logo" width="200" height="200">
 </div>
 <p>
 Polyglot is an educational app designed to help people who are learning a language, practise their conversational skills over text and voice on a daily basic with the aid of AI. With it's inbuilt ability to translate any conversations to your native language as well as giving you the ability to check all your grammatical mistakes, learning a new language is no longer a daunting task.
@@ -59,29 +59,29 @@ Polyglot is an educational app designed to help people who are learning a langua
 
 1. Clone the repository
 
-    ```sh
-    git clone https://github.com/josht28/Polyglot.git
-    ```
+   ```sh
+   git clone https://github.com/josht28/Polyglot.git
+   ```
 
 2. Install dependencies:
 
 - Client : `cd client/`
 
-    ```sh
-    npm install
-    ```
+  ```sh
+  npm install
+  ```
 
 - Express server : `cd server/express`
 
-    ```sh
-    npm install
-    ```
+  ```sh
+  npm install
+  ```
 
 - Python server: `cd server/python`
 
-    ```sh
-    pip3 install -r requirements.txt
-    ```
+  ```sh
+  pip3 install -r requirements.txt
+  ```
 
 3. setup env variables:
 
