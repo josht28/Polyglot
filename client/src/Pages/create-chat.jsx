@@ -31,8 +31,6 @@ export function CreateChat() {
   const createChat = async function (e) {
     e.preventDefault();
     if (nativeLanguage && targetLanguage) {
-      console.log(`native language :${nativeLanguage}`);
-      console.log(`target language :${targetLanguage}`);
       const chatroomId = uuidv4();
       const messageId = uuidv4();
       const data = {
@@ -57,7 +55,6 @@ export function CreateChat() {
         ],
       };
       let chatrooms = await createChatRoom(data);
-      console.log(chatrooms);
       setTimeout(() => {
         dispatch({ type: "updateChatroomList", payload: chatrooms });
         navigate("/dashboard");

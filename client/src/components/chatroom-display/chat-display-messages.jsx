@@ -6,7 +6,6 @@ import { useEffect,useRef } from "react";
 
 export function ChatDisplayMessage() {
 
-  //destructure the messages
   const messages = useSelector((state) => state.ChatReducer.messages);
   const AI_id = useSelector((state) => state.ChatReducer.AI_id);
   const AI_image = useSelector((state) => state.ChatReducer.AI_image);

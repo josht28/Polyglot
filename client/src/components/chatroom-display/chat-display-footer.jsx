@@ -33,7 +33,6 @@ export function ChatDisplayFooter() {
         chatroomId: chatroom.chatroomId,
         user_name: chatroom.user_name,
         targetLanguage: chatroom.targetLanguage,
-        user_name: "Josh",
         messages: {
           messageId: messageId,
           senderId: chatroom.userId,
@@ -44,9 +43,9 @@ export function ChatDisplayFooter() {
           translatedText: "",
         },
       };
-      console.log("clicked");
       // reset the inout field
       SetText("");
+      
       //save the message to the database
       const chatroomDetail = await saveMessage(data);
 

@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Image, Transformation } from "cloudinary-react";
+import { Image} from "cloudinary-react";
 
 export function ChatDisplayHeader() {
   const AI_image = useSelector((state) => state.ChatReducer.AI_image);

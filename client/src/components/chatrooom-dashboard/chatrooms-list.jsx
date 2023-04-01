@@ -7,7 +7,6 @@ export function ChatroomsList() {
   const dispatch = useDispatch();
   const chatroomList = useSelector((state) => state.ChatroomListReducer.chatroomList);
   useEffect(() => {
-    // get all the chatrooms on initiation
     (async () => {
       let chatrooms = await getChatrooms();
       // sort the chatrooms based on when the last message was sent
@@ -17,7 +16,6 @@ export function ChatroomsList() {
             first.messages.slice(-1)[0].timeStamp
           );
         })
-      // update the list of chatrooms
      dispatch({type:"displayAllChatrooms",payload: sortedChatrooms})
       // display the first chatroom messages
       dispatch({ type: "getChatRoomMessages", payload: sortedChatrooms[0]});

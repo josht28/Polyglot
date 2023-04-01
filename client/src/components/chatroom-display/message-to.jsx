@@ -4,14 +4,9 @@ import { useSelector } from "react-redux";
 import { checkGrammar,translateGrammar } from "../../ApiService";
 export function MessageTo({ message }) {
   const prettyTimestamp = moment(new Date(+message.timeStamp)).format("LT");
-  // state to check if grammar needs to be checked
   const [RevealGrammar, SetRevealGrammar] = useState(false);
-  // state for storing the response
   const [GrammarResponse, SetGrammarResponse] = useState("");
-
-  // state to store the translation of the grammar explanation
   const [GrammarTranslation, SetGrammarTranslation] = useState("");
-  // State to check if the translation already was made
   const [TranslationExists, SetTranslationExists] = useState(false);
 
   const targetLanguage = useSelector((state) => state.ChatReducer.targetLanguage);
@@ -22,7 +17,6 @@ export function MessageTo({ message }) {
     if (GrammarResponse === "") {
       message.targetLanguage = targetLanguage;
       let response = await checkGrammar(message);
-      // save this response and serve to the user
       SetGrammarResponse(response);
       SetRevealGrammar(!RevealGrammar);
     } else {
